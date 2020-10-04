@@ -1,16 +1,8 @@
-<?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-?>
-
-<h2>Fiche de frais</h2>
+<h2>Fiches de frais</h2>
 <div class="row">
     <div class="col-md-4">
-        <h3>Sélectionner un mois et un visiteur  : </h3>
+        <h3>Sélectionner un mois et un visiteur : </h3>
     </div>
     <div class="col-md-4">
         <form action="index.php?uc=etatFrais&action=voirEtatFrais" 
@@ -23,7 +15,7 @@
                         $mois = $unMois['mois'];
                         $numAnnee = $unMois['numAnnee'];
                         $numMois = $unMois['numMois'];
-                        if ($mois == $moisASelectionner) {
+                        if ($mois == $moisASelectionne) {
                             ?>
                             <option selected value="<?php echo $mois ?>">
                                 <?php echo $numMois . '/' . $numAnnee ?> </option>
@@ -36,32 +28,23 @@
                         }
                     }
                     ?>    
-
                 </select>
             </div>
             <div class="form-group">
-                <label for="lstVisiteurs" accesskey="n">Visiteur : </label>
-                <select id="lstMois" name="lstMois" class="form-control">
+                <label for="lstVisiteur" accesskey="n">Visiteur : </label>
+                <select id="lstVisiteur" name="lstVisiteur" class="form-control">
                     <?php
-                    foreach ($lesVisiteurs as $unVisiteurs) {
-                        $mois = $unMois['mois'];
-                        $numAnnee = $unMois['numAnnee'];
-                        $numMois = $unMois['numMois'];
-                        if ($mois == $moisASelectionner) {
-                            ?>
-                            <option selected value="<?php echo $mois ?>">
-                                <?php echo $numMois . '/' . $numAnnee ?> </option>
-                            <?php
-                        } else {
-                            ?>
-                            <option value="<?php echo $mois ?>">
-                                <?php echo $numMois . '/' . $numAnnee ?> </option>
-                            <?php
-                        }
+                    $lesVisiteur = $pdo->getVisiteurFromMois($mois);
+                    foreach($lesVisiteur as $unVisiteur){
+                        $idVisiteur= $unVisiteur;
+                        ?>
+                        <option value="<?php echo $idVisiteur?>"> <?php echo $unVisiteur ?></option>
+                        <?php
                     }
-                    ?>    
-
-                </select>
+                    ?>
+                        
+                        
+              </select>
             </div>
             <input id="ok" type="submit" value="Valider" class="btn btn-success" 
                    role="button">
