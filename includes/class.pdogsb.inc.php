@@ -500,4 +500,10 @@ class PdoGsb
         $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
         $requetePrepare->execute();
     }
+    public function getMoisFicheDeFrais(){
+    $requetePrepare= PdoGSB::$MonPdo->prepare(
+        'select distinct mois from fichefrais where idetat="CR"');
+    }
 }
+
+
