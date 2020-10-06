@@ -42,6 +42,7 @@
                         </h1>
                     </div>
                     <div class="col-md-8">
+                        <?php if($_SESSION['type']=='visiteur'){ ?>
                         <ul class="nav nav-pills pull-right" role="tablist">
                             <li <?php if (!$uc || $uc == 'accueil') { ?>class="active" <?php } ?>>
                                 <a href="index.php">
@@ -68,7 +69,36 @@
                                     Déconnexion
                                 </a>
                             </li>
-                        </ul>
+                        </ul><?php } ?>
+                        <?php if($_SESSION['type']=='comptable'){ ?>
+                        <ul class="nav nav-pills pull-right" role="tablist">
+                            <li <?php if (!$uc || $uc == 'accueil') { ?>class="active" <?php } ?>>
+                                <a href="index.php">
+                                    <span class="glyphicon glyphicon-home"></span>
+                                    Accueil
+                                </a>
+                            </li>
+                            <li <?php if ($uc == 'gererFrais') { ?>class="active"<?php } ?>>
+                                <a href="index.php?uc=gererFrais&action=saisirFrais">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    Renseigner la fiche de frais
+                                </a>
+                            </li>
+                            <li <?php if ($uc == 'etatFrais') { ?>class="active"<?php } ?>>
+                                <a href="index.php?uc=ValiderFicheDeFrais&action=selectionnerMois">
+                                    <span class="glyphicon glyphicon-list-alt"></span>
+                                    Valider fiche de frais
+                                </a>
+                            </li>
+                            <li 
+                            <?php if ($uc == 'deconnexion') { ?>class="active"<?php } ?>>
+                                <a href="index.php?uc=deconnexion&action=demandeDeconnexion">
+                                    <span class="glyphicon glyphicon-log-out"></span>
+                                    Déconnexion
+                                </a>
+                            </li>
+                        </ul><?php } ?>
+                        
                     </div>
                 </div>
             </div>

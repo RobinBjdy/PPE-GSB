@@ -520,11 +520,11 @@ class PdoGsb
     
       public function getVisiteurFromMois($mois){
         $requetePrepare= PdoGSB::$monPdo->prepare(
-            'select idvisiteur from fichefrais '
+            'select idvisiteur as visiteur from fichefrais '
              . 'where mois= :unMois');
         $requetePrepare->bindParam(':unMois',$mois,PDO::PARAM_STR);
         $requetePrepare->execute();
-        $res=$requetePrepare->fetch();
+        $res=$requetePrepare->fetchALL(PDO::FETCH_ASSOC);
         return $res;
     }
 }

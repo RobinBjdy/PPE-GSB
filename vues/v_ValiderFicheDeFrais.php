@@ -5,7 +5,7 @@
         <h3>Sélectionner un mois et un visiteur : </h3>
     </div>
     <div class="col-md-4">
-        <form action="index.php?uc=etatFrais&action=voirEtatFrais" 
+        <form action="index.php?uc=etatFrais&action=validerEtatFrais" 
               method="post" role="form">
             <div class="form-group">
                 <label for="lstMois" accesskey="n">Mois : </label>
@@ -22,7 +22,7 @@
                             <?php
                         } else {
                             ?>
-                            <option value="<?php echo $mois ?>">
+                            <option selected value="<?php echo $mois ?>">
                                 <?php echo $numMois . '/' . $numAnnee ?> </option>
                             <?php
                         }
@@ -36,9 +36,9 @@
                     <?php
                     $lesVisiteur = $pdo->getVisiteurFromMois($mois);
                     foreach($lesVisiteur as $unVisiteur){
-                        $idVisiteur= $unVisiteur;
+                        $idVisiteur= $unVisiteur['visiteur'];
                         ?>
-                        <option value="<?php echo $idVisiteur?>"> <?php echo $unVisiteur ?></option>
+                    <option selected value="<?php echo $idVisiteur?>"> <?php echo $unVisiteur['visiteur'] ?></option>
                         <?php
                     }
                     ?>
