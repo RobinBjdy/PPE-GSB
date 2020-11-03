@@ -108,6 +108,12 @@
             </tr>
             <?php }?>
         </table>
+    </div>
+        <input id="okDate" type="submit" value="Corriger" class="btn btn-success" 
+               role="button"> 
+        <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-danger" 
+                   role="button"></br> </br>
+        <div class="panel panel-info">
         <div class="panel-heading">Eléments forfaistisés</div>
         <table class="table table-bordered table-responsive">
             <tr>
@@ -115,7 +121,7 @@
                 <th>IDLibelle</th>
                 <th>Quantités</th>
                 <th>Prix</th>
-                <th>Total</th>
+                <th></th>
             </tr>
             <?php foreach($infoFraisForfait as $frais){
                 $idLibelle=$frais['idfrais'];
@@ -128,8 +134,17 @@
                 <td><?php echo $idLibelle ?></td>
                 <td><?php echo $quantite ?></td>
                 <td><?php echo $prix ?></td>
+                <td><input id="okDate" type="submit" value="Corriger" class="btn btn-success" 
+                           accept=""role="button"> 
+                    <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-danger" 
+                           accept=""role="button">
+                </td>
             </tr>
             <?php } ?>
         </table>
     </div>
+        <input id="okDate" type="submit" value="Valider" class="btn btn-success" 
+                           accept=""role="button"> 
+                    <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-danger" 
+                           accept=""role="button">
 <?php } ?>
