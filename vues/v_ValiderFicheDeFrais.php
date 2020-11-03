@@ -100,9 +100,24 @@
             
             ?>
             <tr>
-                <td><?php echo $date ?></td>
-                <td><?php echo $nbJustificatifs ?></td>
-                <td><?php echo $montant ?></td>
+                <td><div class="form-group">
+                        <label for="idFrais"></label>
+                        <input type="text" 
+                               size="10" maxlength="5" 
+                               value="<?php echo $date ?>">
+                    </div></td>
+                <td><div class="form-group">
+                        <label for="idFrais"></label>
+                        <input type="text" 
+                               size="10" maxlength="5" 
+                               value="<?php echo $nbJustificatifs ?>">
+                    </div></td>
+                <td><div class="form-group">
+                        <label for="idFrais"></label>
+                        <input type="text" 
+                               size="10" maxlength="5" 
+                               value="<?php echo $montant ?>">
+                    </div></td>
                 <td><?php echo $idEtat ?></td>
                 <td><?php echo $libelle ?></td>
             </tr>
@@ -132,7 +147,12 @@
             <tr>
                 <td><?php echo $libelleFrais ?></td>
                 <td><?php echo $idLibelle ?></td>
-                <td><?php echo $quantite ?></td>
+                <td><div class="form-group">
+                        <label for="idFrais"></label>
+                        <input type="text" 
+                               size="10" maxlength="5" 
+                               value="<?php echo $quantite ?>">
+                    </div></td>
                 <td><?php echo $prix ?></td>
                 <td><input id="okDate" type="submit" value="Corriger" class="btn btn-success" 
                            accept=""role="button"> 
