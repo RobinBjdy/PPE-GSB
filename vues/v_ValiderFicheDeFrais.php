@@ -40,7 +40,7 @@
                     <?php
                     if (empty($_SESSION['date'])) {
                         $date = str_replace('/', '', filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING));
-                        trim($date);                      
+                        trim($date);
                         $_SESSION['date'] = $date;
                         $lesVisiteur = $pdo->getVisiteurFromMois($date);
                         $selectedValue = $lesVisiteur[0];
@@ -75,11 +75,6 @@
 </div>
 <br>
 <?php if ($action == 'AffichageFicheFraisAndVisiteur') { ?>
-    <?php
-    $idVisiteur = filter_input(INPUT_POST, 'lstVisiteur', FILTER_SANITIZE_STRING);
-    $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($idVisiteur, $_SESSION['date']);
-    $infoFraisForfait=$pdo->getLesFraisForfait($idVisiteur, $_SESSION['date']);
-    ?>
     <div class="panel panel-info">
         <div class="panel-heading">Fiche</div>
         <table class="table table-bordered table-responsive">
@@ -94,41 +89,37 @@
             foreach ($infoFicheDeFrais as $infoFiche) {
                 $date = $infoFiche['dateModif'];
                 $nbJustificatifs = $infoFiche['nbJustificatifs'];
-                $montant = $infoFiche['montantValide'];
+                foreach ($infoFraisHorsForfait as $frais) {
+                    $nbJustificatifs += 1;
+                }
+                $montants = 0;
+                foreach ($infoFraisHorsForfait as $frais) {
+                    $montant = $frais['montant'];
+                    $montants += $montant;
+                }
                 $libelle = $infoFiche['libEtat'];
                 $idEtat = $infoFiche['idEtat'];
-            
-            ?>
-            <tr>
-                <td><div class="form-group">
-                        <label for="idFrais"></label>
-                        <input type="text" 
-                               size="10" maxlength="5" 
-                               value="<?php echo $date ?>">
-                    </div></td>
-                <td><div class="form-group">
-                        <label for="idFrais"></label>
-                        <input type="text" 
-                               size="10" maxlength="5" 
-                               value="<?php echo $nbJustificatifs ?>">
-                    </div></td>
-                <td><div class="form-group">
-                        <label for="idFrais"></label>
-                        <input type="text" 
-                               size="10" maxlength="5" 
-                               value="<?php echo $montant ?>">
-                    </div></td>
-                <td><?php echo $idEtat ?></td>
-                <td><?php echo $libelle ?></td>
-            </tr>
-            <?php }?>
+                ?>
+                <tr>
+                    <td><?php echo $date ?></td>
+                    <td><div class="form-group">
+                            <label for="idFrais"></label>
+                            <input type="text" 
+                                   size="1" maxlength="5" 
+                                   value="<?php echo $nbJustificatifs ?>">
+                        </div></td>
+                    <td><?php echo $montants ?></td>
+                    <td><?php echo $idEtat ?></td>
+                    <td><?php echo $libelle ?></td>
+                </tr>
+            <?php } ?>
         </table>
     </div>
-        <input id="okDate" type="submit" value="Corriger" class="btn btn-success" 
-               role="button"> 
-        <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-danger" 
-                   role="button"></br> </br>
-        <div class="panel panel-info">
+    <input id="nBJustif" type="submit" value="Corriger" action="CorrigeNbJustif" class="btn btn-success" 
+           role="button"> 
+    <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-danger" 
+           role="button"></br> </br>
+    <div class="panel panel-info">
         <div class="panel-heading">Eléments forfaitisés</div>
         <table class="table table-bordered table-responsive">
             <tr>
@@ -136,35 +127,79 @@
                 <th>IDLibelle</th>
                 <th>Quantités</th>
                 <th>Prix</th>
-                <th></th>
             </tr>
-            <?php foreach($infoFraisForfait as $frais){
-                $idLibelle=$frais['idfrais'];
-                $libelleFrais=$frais['libelle'];
-                $quantite=$frais['quantite'];
-                $prix=$frais['prix'];
-             ?>
-            <tr>
-                <td><?php echo $libelleFrais ?></td>
-                <td><?php echo $idLibelle ?></td>
-                <td><div class="form-group">
-                        <label for="idFrais"></label>
-                        <input type="text" 
-                               size="10" maxlength="5" 
-                               value="<?php echo $quantite ?>">
-                    </div></td>
-                <td><?php echo $prix ?></td>
-                <td><input id="okDate" type="submit" value="Corriger" class="btn btn-success" 
-                           accept=""role="button"> 
-                    <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-danger" 
-                           accept=""role="button">
-                </td>
-            </tr>
+            <?php
+            foreach ($infoFraisForfait as $frais) {
+                $idLibelle = $frais['idfrais'];
+                $libelleFrais = $frais['libelle'];
+                $quantite = $frais['quantite'];
+                $prix = $frais['prix'];
+                ?>
+                <tr>
+                    <td><?php echo $libelleFrais ?></td>
+                    <td><?php echo $idLibelle ?></td>
+                    <td><div class="form-group">
+                            <label for="idFrais"></label>
+                            <input type="text" 
+                                   size="1" maxlength="5" 
+                                   value="<?php echo $quantite ?>">
+                        </div></td>
+                    <td><?php echo $prix ?></td>
+                </tr>
+                
             <?php } ?>
         </table>
     </div>
-        <input id="okDate" type="submit" value="Valider" class="btn btn-success" 
-                           accept=""role="button"> 
-                    <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-danger" 
-                           accept=""role="button">
+     <input id="okElemForf" type="submit" value="Corriger" class="btn btn-success" 
+           role="button"> 
+    <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-danger" 
+           role="button"></br> </br>
+    <div class="panel panel-info">
+        <div class="panel-heading">Eléments hors-forfait</div>
+        <table class="table table-bordered table-responsive">
+            <tr>
+                <th>Date</th>
+                <th>Libelle</th>
+                <th>Montant</th>
+                <th></th>
+            </tr>
+            <?php
+            foreach ($infoFraisHorsForfait as $frais) {
+                $date = $frais['date'];
+                $libellehorsFrais = $frais['libelle'];
+                $montant = $frais['montant'];
+                ?>
+                <tr>
+                    <td><div class="form-group">
+                            <label for="date"></label>
+                            <input type="text" 
+                                   size="10" maxlength="5" 
+                                   value="<?php echo $date ?>">
+                        </div></td>
+                    <td><div class="form-group">
+                            <label for="libelle"></label>
+                            <input type="text" 
+                                   size="10" maxlength="5" 
+                                   value="<?php echo $libellehorsFrais ?>">
+                        </div></td>
+                    <td><div class="form-group">
+                            <label for="montant"></label>
+                            <input type="text" 
+                                   size="10" maxlength="5" 
+                                   value="<?php echo $montant ?>">
+                        </div></td>
+                    <td><input id="okElemHorsForf" type="submit" value="Corriger" class="btn btn-success" 
+                               accept=""role="button"> 
+                        <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-danger" 
+                               accept=""role="button">
+                    </td>
+
+                </tr>
+    <?php } ?>
+        </table>
+    </div>
+    <input id="okFicheFrais" type="submit" value="Valider" class="btn btn-success" 
+           accept=""role="button"> 
+    <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-danger" 
+           accept=""role="button">
 <?php } ?>
