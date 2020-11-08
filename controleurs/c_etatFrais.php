@@ -36,10 +36,11 @@ case 'voirEtatFrais':
     $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($idVisiteur, $leMois);
     $numAnnee = substr($leMois, 0, 4);
     $numMois = substr($leMois, 4, 2);
-    $libEtat = $lesInfosFicheFrais['libEtat'];
-    $montantValide = $lesInfosFicheFrais['montantValide'];
-    $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
-    $dateModif = dateAnglaisVersFrancais($lesInfosFicheFrais['dateModif']);
+    foreach($lesInfosFicheFrais as $frais){
+    $libEtat = $frais['libEtat'];
+    $montantValide = $frais['montantValide'];
+    $nbJustificatifs = $frais['nbJustificatifs'];
+    $dateModif = dateAnglaisVersFrancais($frais['dateModif']);}
     include 'vues/v_etatFrais.php';
     
 }
