@@ -39,5 +39,18 @@ switch ($action) {
         $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($idVisiteur, $_SESSION['date']);
         $infoFraisForfait = $pdo->getLesFraisForfait($idVisiteur, $_SESSION['date']);
         $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur, $_SESSION['date']);
-        include'vues/v_ValiderrFicheDeFrais.php';
+        include'vues/v_ValiderFicheDeFrais.php';
+        break;
+    case 'CorrigerNbJustificatifs' :
+        break;
+    case 'CorrigerFraisForfait':
+        $lesFrais = filter_input(INPUT_POST, 'lesFrais', FILTER_DEFAULT, FILTER_FORCE_ARRAY);
+        var_dump($_POST);
+        if (lesQteFraisValides($lesFrais)) {
+            $pdo->majFraisForfait($idVisiteur, $leMois, $lesFrais);
+        } else {
+            ajouterErreur('Les valeurs des frais doivent être numériques');
+            include 'vues/v_erreurs.php';
+        }
+        break;
 }
