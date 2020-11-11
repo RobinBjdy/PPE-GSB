@@ -15,15 +15,13 @@
             <?php
             foreach ($infoFicheDeFrais as $infoFiche) {
                 $date = $infoFiche['dateModif'];
-                $nbJustificatifs = $infoFiche['nbJustificatifs'];
-                foreach ($infoFraisHorsForfait as $frais) {
-                    $nbJustificatifs += 1;
-                }
+                
                 $montants = 0;
                 foreach ($infoFraisHorsForfait as $frais) {
                     $montant = $frais['montant'];
                     $montants += $montant;
                 }
+                $nbJustificatifs = $infoFiche['nbJustificatifs'];
                 $libelle = $infoFiche['libEtat'];
                 $idEtat = $infoFiche['idEtat'];
                 ?>
@@ -32,6 +30,7 @@
                     <td><div class="form-group">
                             <label for="idFrais"></label>
                             <input type="text" 
+                                   name="nbJust"
                                    size="1" maxlength="5" 
                                    value="<?php echo $nbJustificatifs ?>">
                         </div></td>
@@ -87,6 +86,9 @@
     <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-danger" 
            role="button">
 </form></br> </br>
+<form method="post" 
+      action="index.php?uc=ValiderFicheDeFrais&action=CorrigerElemHorsForfait" 
+      role="form">
 <div class="panel panel-info">
     <div class="panel-heading">Eléments hors-forfait</div>
     <table class="table table-bordered table-responsive">
@@ -106,18 +108,21 @@
                 <td><div class="form-group">
                         <label for="date"></label>
                         <input type="text" 
+                               name="lesDates"
                                size="10" maxlength="5" 
                                value="<?php echo $date ?>">
                     </div></td>
                 <td><div class="form-group">
                         <label for="libelle"></label>
                         <input type="text" 
+                               name="lesLibelles"
                                size="10" maxlength="5" 
                                value="<?php echo $libellehorsFrais ?>">
                     </div></td>
                 <td><div class="form-group">
                         <label for="montant"></label>
                         <input type="text" 
+                               name="lesMontants"
                                size="10" maxlength="5" 
                                value="<?php echo $montant ?>">
                     </div></td>
@@ -131,6 +136,7 @@
         <?php } ?>
     </table>
 </div>
+</form>
 <input id="okFicheFrais" type="submit" value="Valider" class="btn btn-success" 
        accept=""role="button"> 
 <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-danger" 

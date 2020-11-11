@@ -29,7 +29,7 @@
                     ?>
                 </select>
             </div>
-            <?php if ($action == 'selectionnerVisiteur' || $action == 'ValiderFicheDeFrais') { ?>
+            <?php if ($action == 'selectionnerVisiteur' || $action == 'ValiderFicheDeFrais' || $action == 'CorrigerNbJustificatifs' || $action == 'CorrigerFraisForfait' || $action == 'CorrigerElemHorsForfait') { ?>
                 <input id="okVisiteur" type="submit" value="Valider" class="btn btn-success" 
                        role="button">
                    <?php } ?>
