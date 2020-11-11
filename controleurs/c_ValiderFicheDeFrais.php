@@ -8,6 +8,7 @@
 
 $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
 $idVisiteur = filter_input(INPUT_POST, 'lstVisiteur', FILTER_SANITIZE_STRING);
+
 switch ($action) {
     case 'selectionnerMois' :
         $lesMois = $pdo->getMoisFicheDeFrais();
@@ -40,14 +41,29 @@ switch ($action) {
         $infoFraisForfait = $pdo->getLesFraisForfait($idVisiteur, $_SESSION['date']);
         $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur, $_SESSION['date']);
         include'vues/v_ValiderFicheDeFrais.php';
+        
         break;
     case 'CorrigerNbJustificatifs' :
         break;
     case 'CorrigerFraisForfait':
+        $lesMois = $pdo->getMoisFicheDeFrais();
+        // Afin de sélectionner par défaut le dernier mois dans la zone de liste
+        // on demande toutes les clés, et on prend la première,
+        // les mois étant triés décroissants
+        $lesCles = array_keys($lesMois);
+        $moisASelectionner = $lesCles[0];
+        include 'vues/v_SelectMois.php';
+        $lesVisiteur = $pdo->getVisiteurFromMois($mois);
+        $selectedValue = $lesVisiteur[0];
+        include 'vues/v_SelectVisiteur.php';
+        $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($idvisi, $mois);
+        $infoFraisForfait = $pdo->getLesFraisForfait($idvisi, $mois);
+        $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($idvisi, $mois);
+        include'vues/v_ValiderFicheDeFrais.php';
+        
         $lesFrais = filter_input(INPUT_POST, 'lesFrais', FILTER_DEFAULT, FILTER_FORCE_ARRAY);
-        var_dump($_POST);
         if (lesQteFraisValides($lesFrais)) {
-            $pdo->majFraisForfait($idVisiteur, $leMois, $lesFrais);
+            $pdo->majFraisForfait($idvisi, $mois, $lesFrais);
         } else {
             ajouterErreur('Les valeurs des frais doivent être numériques');
             include 'vues/v_erreurs.php';
