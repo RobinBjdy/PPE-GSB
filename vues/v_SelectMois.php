@@ -1,7 +1,7 @@
 
 <h2>Fiches de frais</h2>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-9">
         <h3>Sélectionner un mois et un visiteur : </h3>
     </div>
     <div class="col-md-4">
