@@ -15,13 +15,13 @@ switch ($action) {
         // on demande toutes les clés, et on prend la première,
         // les mois étant triés décroissants
         $lesCles = array_keys($lesMois);
-        $moisASelectionner = $lesCles[0];
+        $moisASelectionne = $lesCles[0];
         include 'vues/v_SelectMois.php';
         break;
     case 'selectionnerVisiteur' :
         $leMois = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING);
         $lesMois = $pdo->getMoisFicheDeFrais();
-        $moisASelectionner = $leMois;
+        $moisASelectionne = $leMois;
         include 'vues/v_SelectMois.php';
         $date = str_replace('/', '', filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING));
         trim($date);
@@ -33,7 +33,7 @@ switch ($action) {
     case 'ValiderFicheDeFrais':
         $leMois = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING);
         $lesMois = $pdo->getMoisFicheDeFrais();
-        $moisASelectionner = $leMois;
+        $moisASelectionne = $leMois;
         include 'vues/v_SelectMois.php';
         include 'vues/v_SelectVisiteur.php';
         $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($idVisiteur, $_SESSION['date']);
@@ -43,12 +43,9 @@ switch ($action) {
 
         break;
     case 'CorrigerNbJustificatifs' :
+        $leMois = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING);
         $lesMois = $pdo->getMoisFicheDeFrais();
-        // Afin de sélectionner par défaut le dernier mois dans la zone de liste
-        // on demande toutes les clés, et on prend la première,
-        // les mois étant triés décroissants
-        $lesCles = array_keys($lesMois);
-        $moisASelectionner = $lesCles[0];
+        $moisASelectionne = $leMois;
         include 'vues/v_SelectMois.php';
         $lesVisiteur = $pdo->getVisiteurFromMois($mois);
         $selectedValue = $lesVisiteur[0];
@@ -64,15 +61,14 @@ switch ($action) {
         <?php
         break;
     case 'CorrigerFraisForfait':
+        $leMois = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING);
         $lesMois = $pdo->getMoisFicheDeFrais();
-        $lesCles = array_keys($lesMois);
-        $moisASelectionner = $lesCles[0];
+        $moisASelectionne = $leMois;
         include 'vues/v_SelectMois.php';
         $lesVisiteur = $pdo->getVisiteurFromMois($mois);
         $selectedValue = $lesVisiteur[0];
         include 'vues/v_SelectVisiteur.php';
         $lesFrais = filter_input(INPUT_POST, 'lesFrais', FILTER_DEFAULT, FILTER_FORCE_ARRAY);
-        var_dump($lesFrais);
         if (lesQteFraisValides($lesFrais)) {
             $pdo->majFraisForfait($idvisi, $mois, $lesFrais);
             ?>
@@ -88,16 +84,20 @@ switch ($action) {
         include'vues/v_ValiderFicheDeFrais.php';
         break;
     case 'CorrigerElemHorsForfait' :
+        $leMois = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING);
         $lesMois = $pdo->getMoisFicheDeFrais();
-        $lesCles = array_keys($lesMois);
-        $moisASelectionner = $lesCles[0];
+        $moisASelectionne = $leMois;
         include 'vues/v_SelectMois.php';
         $lesVisiteur = $pdo->getVisiteurFromMois($mois);
         $selectedValue = $lesVisiteur[0];
         include 'vues/v_SelectVisiteur.php';
-        $lesHorsForfait = filter_input(INPUT_POST, 'lesLibelles', FILTER_DEFAULT);
-        var_dump($lesHorsForfait);
-        /*$pdo->majFraisHorsForfait($idvisi, $mois, $lesHorsForfait);*/
+        $lesHorsForfaitDate = (filter_input(INPUT_POST, 'lesDates', FILTER_DEFAULT, FILTER_FORCE_ARRAY));
+        $lesHorsForfaitLibelle = (filter_input(INPUT_POST, 'lesLibelles', FILTER_DEFAULT, FILTER_FORCE_ARRAY));
+        $lesHorsForfaitMontant = (filter_input(INPUT_POST, 'lesMontants', FILTER_DEFAULT, FILTER_FORCE_ARRAY));
+        $pdo->majFraisHorsForfait($idvisi, $mois, $lesHorsForfaitLibelle, $lesHorsForfaitMontant, $lesHorsForfaitDate);
+        ?>
+        <script>alert("<?php echo htmlspecialchars('Votre fiche de frais a bien été corrigée ! ', ENT_QUOTES); ?>")</script>
+        <?php
         $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($idvisi, $mois);
         $infoFraisForfait = $pdo->getLesFraisForfait($idvisi, $mois);
         $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($idvisi, $mois);
