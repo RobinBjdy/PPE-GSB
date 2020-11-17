@@ -507,21 +507,25 @@ class PdoGsb {
         return $res;
     }
 
-    public function majFraisHorsForfait($idVisiteur, $mois, $lesHorsForfait) {
-        $lesCles = array_keys($lesHorsForfait);
+    public function majFraisHorsForfait($idVisiteur, $mois, $lesHorsForfaitLibelle, $lesHorsForfaitMontant, $lesHorsForfaitDate) {
+        $lesCles = array_keys($lesHorsForfaitLibelle);
         foreach ($lesCles as $unIdHorsFrais) {
-            $libelle = $lesHorsForfait[$unIdHorsFrais];
+            $libelle = $lesHorsForfaitLibelle[$unIdHorsFrais];
+            $montant = $lesHorsForfaitMontant[$unIdHorsFrais];
+            $date = $lesHorsForfaitDate[$unIdHorsFrais];
             $requetePrepare = PdoGSB::$monPdo->prepare(
                     'UPDATE lignefraishorsforfait '
-                    . 'SET lignefraishorsforfait.libelle = :unLibelle, lignefraishorsforfait.date = :uneDate, lignefraishorsforfait.montant = :unMontant'
+                    . 'SET lignefraishorsforfait.libelle = :unLibelle, lignefraishorsforfait.montant = :unMontant, lignefraishorsforfait.date = :uneDate '
                     . 'WHERE lignefraishorsforfait.idvisiteur = :unIdVisiteur '
                     . 'AND lignefraishorsforfait.mois = :unMois '
+                    . 'AND lignefraishorsforfait.id = :unId'
             );
             $requetePrepare->bindParam(':unLibelle', $libelle, PDO::PARAM_STR);
-            $requetePrepare->bindParam(':uneDate', $libelle, PDO::PARAM_STR);
-            $requetePrepare->bindParam(':unMontant', $libelle, PDO::PARAM_INT);
+            $requetePrepare->bindParam(':unMontant', $montant, PDO::PARAM_STR);
+            $requetePrepare->bindParam(':uneDate', $date, PDO::PARAM_STR);
             $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
             $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
+            $requetePrepare->bindParam(':unId', $unIdHorsFrais, PDO::PARAM_INT);
             $requetePrepare->execute();
         }
     }
