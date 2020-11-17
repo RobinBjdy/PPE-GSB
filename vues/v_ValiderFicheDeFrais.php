@@ -21,6 +21,10 @@
                     $montant = $frais['montant'];
                     $montants += $montant;
                 }
+                foreach ($infoFraisForfait as $frais) {
+                    $montant = $frais['quantite']*$frais['prix'];
+                    $montants += $montant;
+                }
                 $nbJustificatifs = $infoFiche['nbJustificatifs'];
                 $libelle = $infoFiche['libEtat'];
                 $idEtat = $infoFiche['idEtat'];
@@ -99,31 +103,32 @@
             <th></th>
         </tr>
         <?php
-        foreach ($infoFraisHorsForfait as $frais) {
+        foreach ($infoFraisHorsForfait as $frais) { 
             $date = $frais['date'];
             $libellehorsFrais = $frais['libelle'];
             $montant = $frais['montant'];
+            $id = $frais['id'];
             ?>
             <tr>
                 <td><div class="form-group">
                         <label for="date"></label>
-                        <input type="text" 
-                               name="lesDates"
-                               size="10" maxlength="5" 
+                        <input type="date" 
+                               name="lesDates[<?php echo $id ?>]"
+                               size="10" maxlength="15" 
                                value="<?php echo $date ?>">
                     </div></td>
                 <td><div class="form-group">
                         <label for="libelle"></label>
                         <input type="text" 
-                               name="lesLibelles"
-                               size="10" maxlength="5" 
+                               name="lesLibelles[<?php echo $id ?>]"
+                               size="10" maxlength="12" 
                                value="<?php echo $libellehorsFrais ?>">
                     </div></td>
                 <td><div class="form-group">
                         <label for="montant"></label>
                         <input type="text" 
-                               name="lesMontants"
-                               size="10" maxlength="5" 
+                               name="lesMontants[<?php echo $id ?>]"
+                               size="10" maxlength="15" 
                                value="<?php echo $montant ?>">
                     </div></td>
                 <td><input id="okElemHorsForf" type="submit" value="Corriger" class="btn btn-success" 
