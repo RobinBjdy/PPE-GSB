@@ -530,4 +530,20 @@ class PdoGsb {
         }
     }
 
+    public function validerFicheDeFrais($idVisiteur, $mois, $montant){
+        $dateCourante = date('Y-m-d');
+        $idEtat = 'VA';
+        $requetePrepare = PdoGSB::$monPdo->prepare(
+                    'UPDATE fichefrais '
+                    . 'SET fichefrais.montantvalide = :unMontant, fichefrais.datemodif = :uneDate, fichefrais.idetat = :unIdEtat '
+                    . 'WHERE fichefrais.idvisiteur = :unIdVisiteur '
+                    . 'AND fichefrais.mois = :unMois '
+            );
+            $requetePrepare->bindParam(':unMontant', $montant, PDO::PARAM_INT);
+            $requetePrepare->bindParam(':uneDate', $dateCourante, PDO::PARAM_STR);
+            $requetePrepare->bindParam(':unIdEtat', $idEtat, PDO::PARAM_STR);
+            $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
+            $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
+            $requetePrepare->execute();
+    }
 }

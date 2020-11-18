@@ -7,7 +7,7 @@
 
 $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
 $idVisiteur = filter_input(INPUT_POST, 'lstVisiteur', FILTER_SANITIZE_STRING);
-
+$montants = 0;
 switch ($action) {
     case 'selectionnerMois' :
         $lesMois = $pdo->getMoisFicheDeFrais();
@@ -37,7 +37,6 @@ switch ($action) {
         $leVisiteur = filter_input(INPUT_POST, 'lstVisiteur', FILTER_SANITIZE_STRING);
         $lesVisiteur = $pdo->getVisiteurFromMois($_SESSION['date']);
         $selectedValue = $leVisiteur;
-        var_dump($leVisiteur);
         include 'vues/v_SelectVisiteur.php';
         $idVis = (filter_input(INPUT_POST, 'lstVisiteur', FILTER_SANITIZE_STRING));
         trim($idVis);
@@ -46,7 +45,7 @@ switch ($action) {
         $infoFraisForfait = $pdo->getLesFraisForfait($_SESSION['visiteur'], $_SESSION['date']);
         $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($_SESSION['visiteur'], $_SESSION['date']);
         include'vues/v_ValiderFicheDeFrais.php';
-
+        $_SESSION['montant'] = $montants;
         break;
     case 'CorrigerNbJustificatifs' :
         $lesMois = $pdo->getMoisFicheDeFrais();
@@ -106,4 +105,9 @@ switch ($action) {
         $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($_SESSION['visiteur'], $_SESSION['date']);
         include'vues/v_ValiderFicheDeFrais.php';
         break;
+    case 'Valider' :
+        $pdo->validerFicheDeFrais($_SESSION['visiteur'], $_SESSION['date'], $_SESSION['montant']);
+        ?>
+        <script>alert("<?php echo htmlspecialchars('Votre fiche de frais a bien été validée ! ', ENT_QUOTES); ?>")</script>
+        <?php
 }
