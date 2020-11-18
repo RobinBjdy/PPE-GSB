@@ -31,46 +31,50 @@ switch ($action) {
         include 'vues/v_SelectVisiteur.php';
         break;
     case 'ValiderFicheDeFrais':
-        $leMois = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING);
         $lesMois = $pdo->getMoisFicheDeFrais();
-        $moisASelectionne = $leMois;
+        $moisASelectionne = $_SESSION['date'];
         include 'vues/v_SelectMois.php';
+        $leVisiteur = filter_input(INPUT_POST, 'lstVisiteur', FILTER_SANITIZE_STRING);
+        $lesVisiteur = $pdo->getVisiteurFromMois($_SESSION['date']);
+        $selectedValue = $leVisiteur;
+        var_dump($leVisiteur);
         include 'vues/v_SelectVisiteur.php';
-        $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($idVisiteur, $_SESSION['date']);
-        $infoFraisForfait = $pdo->getLesFraisForfait($idVisiteur, $_SESSION['date']);
-        $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur, $_SESSION['date']);
+        $idVis = (filter_input(INPUT_POST, 'lstVisiteur', FILTER_SANITIZE_STRING));
+        trim($idVis);
+        $_SESSION['visiteur'] = $idVis;
+        $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($_SESSION['visiteur'], $_SESSION['date']);
+        $infoFraisForfait = $pdo->getLesFraisForfait($_SESSION['visiteur'], $_SESSION['date']);
+        $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($_SESSION['visiteur'], $_SESSION['date']);
         include'vues/v_ValiderFicheDeFrais.php';
 
         break;
     case 'CorrigerNbJustificatifs' :
-        $leMois = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING);
         $lesMois = $pdo->getMoisFicheDeFrais();
-        $moisASelectionne = $leMois;
+        $moisASelectionne = $_SESSION['date'];
         include 'vues/v_SelectMois.php';
-        $lesVisiteur = $pdo->getVisiteurFromMois($mois);
-        $selectedValue = $lesVisiteur[0];
+        $lesVisiteur = $pdo->getVisiteurFromMois($_SESSION['date']);
+        $selectedValue = $_SESSION['visiteur'];
         include 'vues/v_SelectVisiteur.php';
         $nbJust = filter_input(INPUT_POST, 'nbJust', FILTER_DEFAULT);
-        $pdo->majNbJustificatifs($idvisi, $mois, $nbJust);
-        $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($idvisi, $mois);
-        $infoFraisForfait = $pdo->getLesFraisForfait($idvisi, $mois);
-        $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($idvisi, $mois);
+        $pdo->majNbJustificatifs($_SESSION['visiteur'], $_SESSION['date'], $nbJust);
+        $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($_SESSION['visiteur'], $_SESSION['date']);
+        $infoFraisForfait = $pdo->getLesFraisForfait($_SESSION['visiteur'], $_SESSION['date']);
+        $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($_SESSION['visiteur'], $_SESSION['date']);
         include'vues/v_ValiderFicheDeFrais.php';
         ?>
         <script>alert("<?php echo htmlspecialchars('Votre fiche de frais a bien été corrigée ! ', ENT_QUOTES); ?>")</script>
         <?php
         break;
     case 'CorrigerFraisForfait':
-        $leMois = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING);
         $lesMois = $pdo->getMoisFicheDeFrais();
-        $moisASelectionne = $leMois;
+        $moisASelectionne = $_SESSION['date'];
         include 'vues/v_SelectMois.php';
-        $lesVisiteur = $pdo->getVisiteurFromMois($mois);
-        $selectedValue = $lesVisiteur[0];
+        $lesVisiteur = $pdo->getVisiteurFromMois($_SESSION['date']);
+        $selectedValue = $_SESSION['visiteur'];
         include 'vues/v_SelectVisiteur.php';
         $lesFrais = filter_input(INPUT_POST, 'lesFrais', FILTER_DEFAULT, FILTER_FORCE_ARRAY);
         if (lesQteFraisValides($lesFrais)) {
-            $pdo->majFraisForfait($idvisi, $mois, $lesFrais);
+            $pdo->majFraisForfait($_SESSION['visiteur'], $_SESSION['date'], $lesFrais);
             ?>
             <script>alert("<?php echo htmlspecialchars('Votre fiche de frais a bien été corrigée ! ', ENT_QUOTES); ?>")</script>
             <?php
@@ -78,29 +82,28 @@ switch ($action) {
             ajouterErreur('Les valeurs des frais doivent être numériques');
             include 'vues/v_erreurs.php';
         }
-        $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($idvisi, $mois);
-        $infoFraisForfait = $pdo->getLesFraisForfait($idvisi, $mois);
-        $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($idvisi, $mois);
+        $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($_SESSION['visiteur'], $_SESSION['date']);
+        $infoFraisForfait = $pdo->getLesFraisForfait($_SESSION['visiteur'], $_SESSION['date']);
+        $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($_SESSION['visiteur'], $_SESSION['date']);
         include'vues/v_ValiderFicheDeFrais.php';
         break;
     case 'CorrigerElemHorsForfait' :
-        $leMois = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING);
         $lesMois = $pdo->getMoisFicheDeFrais();
-        $moisASelectionne = $leMois;
+        $moisASelectionne = $_SESSION['date'];
         include 'vues/v_SelectMois.php';
-        $lesVisiteur = $pdo->getVisiteurFromMois($mois);
-        $selectedValue = $lesVisiteur[0];
+        $lesVisiteur = $pdo->getVisiteurFromMois($_SESSION['date']);
+        $selectedValue = $_SESSION['visiteur'];
         include 'vues/v_SelectVisiteur.php';
         $lesHorsForfaitDate = (filter_input(INPUT_POST, 'lesDates', FILTER_DEFAULT, FILTER_FORCE_ARRAY));
         $lesHorsForfaitLibelle = (filter_input(INPUT_POST, 'lesLibelles', FILTER_DEFAULT, FILTER_FORCE_ARRAY));
         $lesHorsForfaitMontant = (filter_input(INPUT_POST, 'lesMontants', FILTER_DEFAULT, FILTER_FORCE_ARRAY));
-        $pdo->majFraisHorsForfait($idvisi, $mois, $lesHorsForfaitLibelle, $lesHorsForfaitMontant, $lesHorsForfaitDate);
+        $pdo->majFraisHorsForfait($_SESSION['visiteur'], $_SESSION['date'], $lesHorsForfaitLibelle, $lesHorsForfaitMontant, $lesHorsForfaitDate);
         ?>
         <script>alert("<?php echo htmlspecialchars('Votre fiche de frais a bien été corrigée ! ', ENT_QUOTES); ?>")</script>
         <?php
-        $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($idvisi, $mois);
-        $infoFraisForfait = $pdo->getLesFraisForfait($idvisi, $mois);
-        $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($idvisi, $mois);
+        $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($_SESSION['visiteur'], $_SESSION['date']);
+        $infoFraisForfait = $pdo->getLesFraisForfait($_SESSION['visiteur'], $_SESSION['date']);
+        $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($_SESSION['visiteur'], $_SESSION['date']);
         include'vues/v_ValiderFicheDeFrais.php';
         break;
 }

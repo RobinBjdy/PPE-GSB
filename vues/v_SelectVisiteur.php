@@ -6,7 +6,7 @@
                 <label for="lstVisiteur" accesskey="n">Visiteur : </label>
                 <select id="lstVisiteur" name="lstVisiteur" class="form-control">
                     <?php
-                    if (empty($_SESSION['date'])) {
+                    if ($_SESSION['date']) {
 
                         foreach ($lesVisiteur as $unVisiteur) {
                             $idvisi = $unVisiteur['visiteur'];

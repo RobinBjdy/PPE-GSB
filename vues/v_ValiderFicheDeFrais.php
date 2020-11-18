@@ -131,7 +131,7 @@
                                size="10" maxlength="15" 
                                value="<?php echo $montant ?>">
                     </div></td>
-                <td><input id="okElemHorsForf" type="submit" value="Corriger" class="btn btn-success" 
+                <td><input id="okElemHorsForf" name="corriger[<?php echo $id ?>]" type="submit" value="Corriger" class="btn btn-success" 
                            accept=""role="button"> 
                     <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-danger" 
                            accept=""role="button">
