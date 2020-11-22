@@ -38,9 +38,10 @@ switch ($action) {
         $lesVisiteur = $pdo->getVisiteurFromMois($_SESSION['date']);
         $selectedValue = $leVisiteur;
         include 'vues/v_SelectVisiteur.php';
-        $idVis = (filter_input(INPUT_POST, 'lstVisiteur', FILTER_SANITIZE_STRING));
-        trim($idVis);
-        $_SESSION['visiteur'] = $idVis;
+        $nomVis = (filter_input(INPUT_POST, 'lstVisiteur', FILTER_SANITIZE_STRING));
+        trim($nomVis);
+        $idVis = $pdo ->getIdFromNomVisiteur($nomVis);
+        $_SESSION['visiteur'] = $idVis['id'];
         $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($_SESSION['visiteur'], $_SESSION['date']);
         $infoFraisForfait = $pdo->getLesFraisForfait($_SESSION['visiteur'], $_SESSION['date']);
         $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($_SESSION['visiteur'], $_SESSION['date']);

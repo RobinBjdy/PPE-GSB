@@ -9,9 +9,9 @@
                     if ($_SESSION['date']) {
 
                         foreach ($lesVisiteur as $unVisiteur) {
-                            $idvisi = $unVisiteur['visiteur'];
+                            $idvisi = $unVisiteur['nomvisiteur'];
                             if ($selectedValue == $idvisi) {
-                                ?><option selected value="<?php echo $unVisiteur['visiteur'] ?>"><?php echo $unVisiteur['visiteur'] ?></option>               
+                                ?><option selected value="<?php echo $unVisiteur['nomvisiteur'] ?>"><?php echo $unVisiteur['nomvisiteur'] ?></option>               
                             <?php } else { ?> <option value="<?php echo $idvisi ?>"><?php echo $idvisi ?></option> <?php
                             }
                         }
@@ -21,7 +21,7 @@
                         foreach ($lesVisiteur as $unVisiteur) {
                             $idvisi = $unVisiteur['visiteur'];
                             if ($selectedValue == $idvisi) {
-                                ?><option selected value="<?php echo $unVisiteur['visiteur'] ?>"><?php echo $unVisiteur['visiteur'] ?></option>               
+                                ?><option selected value="<?php echo $unVisiteur['nomvisiteur'] ?>"><?php echo $unVisiteur['nomvisiteur'] ?></option>               
                             <?php } else { ?> <option value="<?php echo $idvisi ?>"><?php echo $idvisi ?></option> <?php
                             }
                         }

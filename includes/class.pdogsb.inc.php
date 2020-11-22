@@ -499,8 +499,10 @@ class PdoGsb {
 
     public function getVisiteurFromMois($mois) {
         $requetePrepare = PdoGSB::$monPdo->prepare(
-                'select idvisiteur as visiteur from fichefrais '
-                . 'where mois=:unMois');
+                "select CONCAT(nom, ' ', prenom)as nomvisiteur, idvisiteur as visiteur from fichefrais "
+                . "inner join visiteur on visiteur.id = fichefrais.idvisiteur "
+                . "where mois=:unMois "
+                . "AND idetat='CR'");
         $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
         $requetePrepare->execute();
         $res = $requetePrepare->fetchAll(PDO::FETCH_ASSOC);
@@ -546,4 +548,17 @@ class PdoGsb {
             $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
             $requetePrepare->execute();
     }
+    
+    public function getIdFromNomVisiteur($nomVis){
+        $requetePrepare = PdoGSB::$monPdo->prepare(
+                "select id from visiteur "
+                . "where CONCAT(nom, ' ', prenom) = :unNom "
+                );
+        $requetePrepare->bindParam(':unNom', $nomVis, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        $res = $requetePrepare->fetch(PDO::FETCH_ASSOC);
+    return $res;
+    }
 }
+
+
