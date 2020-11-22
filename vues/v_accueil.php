@@ -58,8 +58,8 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
+        <div class="panel panel-primary"  style="border-color: #f3e43a !important;">
+            <div class="panel-heading" style="background-color: #f3e43a !important; border-color: #f3e43a !important;">
                 <h3 class="panel-title">
                     <span class="glyphicon glyphicon-bookmark"></span>
                     Navigation

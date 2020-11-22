@@ -84,7 +84,7 @@
                                     Renseigner la fiche de frais
                                 </a>
                             </li>
-                            <li <?php if ($uc == 'etatFrais') { ?>class="active"<?php } ?>>
+                            <li <?php if ($uc == 'ValiderFicheDeFrais') { ?>class="active"<?php } ?>>
                                 <a href="index.php?uc=ValiderFicheDeFrais&action=selectionnerMois">
                                     <span class="glyphicon glyphicon-list-alt"></span>
                                     Valider fiche de frais
