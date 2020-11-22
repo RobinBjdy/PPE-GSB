@@ -104,6 +104,7 @@
         <?php
         foreach ($infoFraisHorsForfait as $frais) { 
             $date = $frais['date'];
+            $datee = implode('-',array_reverse  (explode('/',$date))); /* transform une date fr en une date us -> 29/10/2020 en 2020-10-29*/
             $libellehorsFrais = $frais['libelle'];
             $montant = $frais['montant'];
             $id = $frais['id'];
@@ -114,7 +115,7 @@
                         <input type="date" 
                                name="lesDates[<?php echo $id ?>]"
                                size="10" maxlength="15" 
-                               value="<?php echo $date ?>">
+                               value="<?php echo $datee ?>">
                     </div></td>
                 <td><div class="form-group">
                         <label for="libelle"></label>
