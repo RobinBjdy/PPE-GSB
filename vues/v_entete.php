@@ -80,13 +80,13 @@
                             </li>
                             <li <?php if ($uc == 'SuivrePaiement') { ?>class="active1"<?php } ?>>
                                 <a href="index.php?uc=SuivrePaiement&action=selectionnerMois" class="couleur">
-                                    <span class="glyphicon glyphicon-list-alt"></span>
+                                    <span class="fa fa-euro"></span>
                                     Suivre le paiement fiche de frais
                                 </a>
                             </li>
                             <li <?php if ($uc == 'ValiderFicheDeFrais') { ?>class="active1"<?php } ?>>
                                 <a href="index.php?uc=ValiderFicheDeFrais&action=selectionnerMois" class="couleur">
-                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    <span class="fa fa-check"></span>
                                     Valider fiche de frais
                                 </a>
                             </li>

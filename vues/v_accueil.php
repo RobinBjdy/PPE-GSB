@@ -58,8 +58,8 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <div class="panel panel-primary"  style="border-color: #FFD045 !important;">
-            <div class="panel-heading" style="background-color: #FFD045 !important; border-color: #FFD045 !important;">
+        <div class="panel panel-primary"  style="border-color: #E02A2A !important;">
+            <div class="panel-heading" style="background-color: #E02A2A !important; border-color: #E61616 !important;">
                 <h3 class="panel-title">
                     <span class="glyphicon glyphicon-bookmark"></span>
                     Navigation
@@ -69,12 +69,12 @@
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
                         <a href="index.php?uc=ValiderFicheDeFrais&action=selectionnerMois"
-                           class="btn btn-primary btn-lg" role="button">
-                            <span class="glyphicon glyphicon-pencil"></span>
+                           class="btn btn-warning btn-lg" role="button">
+                            <span class="fa fa-check"></span>
                             <br>Valider fiche de frais</a>
                         <a href="index.php?uc=SuivrePaiement&action=selectionnerMois"
-                           class="btn btn-success btn-lg" role="button">
-                            <span class="glyphicon glyphicon-list-alt"></span>
+                           class="btn btn-info btn-lg" role="button">
+                            <span class="fa fa-euro"></span>
                             <br>Suivre le paiement fiche de frais</a>
                     </div>
                 </div>
