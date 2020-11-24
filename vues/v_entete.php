@@ -24,7 +24,7 @@
         <meta name="author" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="./styles/bootstrap/bootstrap.css" rel="stylesheet">
-        <link href="./styles/style.css" rel="stylesheet">
+        <link href="./styles/style.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <div class="container">
@@ -72,27 +72,27 @@
                         </ul><?php } ?>
                         <?php if($_SESSION['type']=='comptable'){ ?>
                         <ul class="nav nav-pills pull-right" role="tablist">
-                            <li <?php if (!$uc || $uc == 'accueil') { ?>class="active" <?php } ?>>
-                                <a href="index.php">
+                            <li <?php if (!$uc || $uc == 'accueil') { ?>class="active1" <?php } ?>>
+                                <a href="index.php" class="couleur">
                                     <span class="glyphicon glyphicon-home"></span>
                                     Accueil
                                 </a>
                             </li>
-                            <li <?php if ($uc == 'gererFrais') { ?>class="active"<?php } ?>>
-                                <a href="index.php?uc=gererFrais&action=saisirFrais">
-                                    <span class="glyphicon glyphicon-pencil"></span>
-                                    Renseigner la fiche de frais
+                            <li <?php if ($uc == 'SuivrePaiement') { ?>class="active1"<?php } ?>>
+                                <a href="index.php?uc=SuivrePaiement&action=selectionnerMois" class="couleur">
+                                    <span class="glyphicon glyphicon-list-alt"></span>
+                                    Suivre le paiement fiche de frais
                                 </a>
                             </li>
-                            <li <?php if ($uc == 'ValiderFicheDeFrais') { ?>class="active"<?php } ?>>
-                                <a href="index.php?uc=ValiderFicheDeFrais&action=selectionnerMois">
-                                    <span class="glyphicon glyphicon-list-alt"></span>
+                            <li <?php if ($uc == 'ValiderFicheDeFrais') { ?>class="active1"<?php } ?>>
+                                <a href="index.php?uc=ValiderFicheDeFrais&action=selectionnerMois" class="couleur">
+                                    <span class="glyphicon glyphicon-pencil"></span>
                                     Valider fiche de frais
                                 </a>
                             </li>
                             <li 
-                            <?php if ($uc == 'deconnexion') { ?>class="active"<?php } ?>>
-                                <a href="index.php?uc=deconnexion&action=demandeDeconnexion">
+                            <?php if ($uc == 'deconnexion') { ?>class="active1"<?php } ?>>
+                                <a href="index.php?uc=deconnexion&action=demandeDeconnexion" class="couleur">
                                     <span class="glyphicon glyphicon-log-out"></span>
                                     Déconnexion
                                 </a>

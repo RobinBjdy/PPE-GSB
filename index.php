@@ -45,5 +45,8 @@ case 'deconnexion':
 case 'ValiderFicheDeFrais':
     include 'controleurs/c_ValiderFicheDeFrais.php';
     break;
+case 'SuivrePaiement':
+    include 'controleurs/c_SuivrePaiement.php';
+    break;
 }
 require 'vues/v_pied.php';

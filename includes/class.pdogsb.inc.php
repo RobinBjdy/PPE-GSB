@@ -497,12 +497,42 @@ class PdoGsb {
         return $leMois;
     }
 
+    public function getMoisFicheDeFraisVA() {
+        $requetePrepare = PdoGSB::$monPdo->prepare(
+                "select distinct mois from fichefrais where idetat='VA'");
+        $requetePrepare->execute();
+        $leMois = array();
+        while ($laLigne = $requetePrepare->fetch()) {
+            $mois = $laLigne['mois'];
+            $numAnnee = substr($mois, 0, 4);
+            $numMois = substr($mois, 4, 2);
+            $leMois[] = array(
+                'mois' => $mois,
+                'numAnnee' => $numAnnee,
+                'numMois' => $numMois
+            );
+        }
+        return $leMois;
+    }
+
     public function getVisiteurFromMois($mois) {
         $requetePrepare = PdoGSB::$monPdo->prepare(
                 "select CONCAT(nom, ' ', prenom)as nomvisiteur, idvisiteur as visiteur from fichefrais "
                 . "inner join visiteur on visiteur.id = fichefrais.idvisiteur "
                 . "where mois=:unMois "
                 . "AND idetat='CR'");
+        $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        $res = $requetePrepare->fetchAll(PDO::FETCH_ASSOC);
+        return $res;
+    }
+
+    public function getVisiteurFromMoisVA($mois) {
+        $requetePrepare = PdoGSB::$monPdo->prepare(
+                "select CONCAT(nom, ' ', prenom)as nomvisiteur, idvisiteur as visiteur from fichefrais "
+                . "inner join visiteur on visiteur.id = fichefrais.idvisiteur "
+                . "where mois=:unMois "
+                . "AND idetat='VA'");
         $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
         $requetePrepare->execute();
         $res = $requetePrepare->fetchAll(PDO::FETCH_ASSOC);
@@ -532,33 +562,49 @@ class PdoGsb {
         }
     }
 
-    public function validerFicheDeFrais($idVisiteur, $mois, $montant){
+    public function validerFicheDeFrais($idVisiteur, $mois, $montant) {
         $dateCourante = date('Y-m-d');
         $idEtat = 'VA';
         $requetePrepare = PdoGSB::$monPdo->prepare(
-                    'UPDATE fichefrais '
-                    . 'SET fichefrais.montantvalide = :unMontant, fichefrais.datemodif = :uneDate, fichefrais.idetat = :unIdEtat '
-                    . 'WHERE fichefrais.idvisiteur = :unIdVisiteur '
-                    . 'AND fichefrais.mois = :unMois '
-            );
-            $requetePrepare->bindParam(':unMontant', $montant, PDO::PARAM_INT);
-            $requetePrepare->bindParam(':uneDate', $dateCourante, PDO::PARAM_STR);
-            $requetePrepare->bindParam(':unIdEtat', $idEtat, PDO::PARAM_STR);
-            $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
-            $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
-            $requetePrepare->execute();
+                'UPDATE fichefrais '
+                . 'SET fichefrais.montantvalide = :unMontant, fichefrais.datemodif = :uneDate, fichefrais.idetat = :unIdEtat '
+                . 'WHERE fichefrais.idvisiteur = :unIdVisiteur '
+                . 'AND fichefrais.mois = :unMois '
+        );
+        $requetePrepare->bindParam(':unMontant', $montant, PDO::PARAM_INT);
+        $requetePrepare->bindParam(':uneDate', $dateCourante, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unIdEtat', $idEtat, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
+        $requetePrepare->execute();
     }
-    
-    public function getIdFromNomVisiteur($nomVis){
+
+    public function validerFicheDeFraisVA($idVisiteur, $mois, $montant) {
+        $dateCourante = date('Y-m-d');
+        $idEtat = 'VA';
+        $requetePrepare = PdoGSB::$monPdo->prepare(
+                'UPDATE fichefrais '
+                . 'SET fichefrais.montantvalide = :unMontant, fichefrais.datemodif = :uneDate, fichefrais.idetat = :unIdEtat '
+                . 'WHERE fichefrais.idvisiteur = :unIdVisiteur '
+                . 'AND fichefrais.mois = :unMois '
+        );
+        $requetePrepare->bindParam(':unMontant', $montant, PDO::PARAM_INT);
+        $requetePrepare->bindParam(':uneDate', $dateCourante, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unIdEtat', $idEtat, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
+        $requetePrepare->execute();
+    }
+
+    public function getIdFromNomVisiteur($nomVis) {
         $requetePrepare = PdoGSB::$monPdo->prepare(
                 "select id from visiteur "
                 . "where CONCAT(nom, ' ', prenom) = :unNom "
-                );
+        );
         $requetePrepare->bindParam(':unNom', $nomVis, PDO::PARAM_STR);
         $requetePrepare->execute();
         $res = $requetePrepare->fetch(PDO::FETCH_ASSOC);
-    return $res;
+        return $res;
     }
+
 }
-
-
