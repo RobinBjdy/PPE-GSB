@@ -108,7 +108,10 @@ switch ($action) {
         break;
     case 'Valider' :
         $pdo->validerFicheDeFrais($_SESSION['visiteur'], $_SESSION['date'], $_SESSION['montant']);
-        ?>
-        <script>alert("<?php echo htmlspecialchars('Votre fiche de frais a bien été validée ! ', ENT_QUOTES); ?>")</script>
+        ?> </br>
+        <div class = "alert alert-success" role = "alert">
+        <p>Votre fiche de frais a bien été mise en paiement ! <a href = "index.php?uc=ValiderFicheDeFrais&action=selectionnerMois">Cliquez ici</a>
+        pour revenir à la page d'accueil.</p>
+        </div>
         <?php
 }

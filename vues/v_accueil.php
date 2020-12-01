@@ -72,7 +72,7 @@
                            class="btn btn-warning btn-lg" role="button">
                             <span class="fa fa-check"></span>
                             <br>Valider fiche de frais</a>
-                        <a href="index.php?uc=SuivrePaiement&action=selectionnerMois"
+                        <a href="index.php?uc=SuivrePaiement&action=selectionnerVisiteur"
                            class="btn btn-info btn-lg" role="button">
                             <span class="fa fa-euro"></span>
                             <br>Suivre le paiement fiche de frais</a>

@@ -79,7 +79,7 @@
                                 </a>
                             </li>
                             <li <?php if ($uc == 'SuivrePaiement') { ?>class="active1"<?php } ?>>
-                                <a href="index.php?uc=SuivrePaiement&action=selectionnerMois" class="couleur">
+                                <a href="index.php?uc=SuivrePaiement&action=selectionnerVisiteur" class="couleur">
                                     <span class="fa fa-euro"></span>
                                     Suivre le paiement fiche de frais
                                 </a>
