@@ -31,7 +31,6 @@
                 <tr>
                     <td><?php echo $date ?></td>
                     <td><div class="form-group">
-                            <label for="idFrais"></label>
                             <input type="text" 
                                    name="nbJust"
                                    size="1" maxlength="5" 
@@ -121,7 +120,7 @@
                         <label for="libelle"></label>
                         <input type="text" 
                                name="lesLibelles[<?php echo $id ?>]"
-                               size="10" maxlength="12" 
+                               size="15" maxlength="12" 
                                value="<?php echo $libellehorsFrais ?>">
                     </div></td>
                 <td><div class="form-group">
