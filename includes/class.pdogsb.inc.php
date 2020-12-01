@@ -581,7 +581,7 @@ class PdoGsb {
 
     public function validerFicheDeFraisVA($idVisiteur, $mois, $montant) {
         $dateCourante = date('Y-m-d');
-        $idEtat = 'VA';
+        $idEtat = 'MP';
         $requetePrepare = PdoGSB::$monPdo->prepare(
                 'UPDATE fichefrais '
                 . 'SET fichefrais.montantvalide = :unMontant, fichefrais.datemodif = :uneDate, fichefrais.idetat = :unIdEtat '
@@ -602,6 +602,16 @@ class PdoGsb {
                 . "where CONCAT(nom, ' ', prenom) = :unNom "
         );
         $requetePrepare->bindParam(':unNom', $nomVis, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        $res = $requetePrepare->fetch(PDO::FETCH_ASSOC);
+        return $res;
+    }
+
+    public function getLesFraisKM($idVisiteur) {
+        $requetePrepare = PdoGSB::$monPdo->prepare(
+                'SELECT fraiskm.prix from fraiskm '
+                . 'inner join visiteur on fraiskm.id = visiteur.idVéhicule '
+        );
         $requetePrepare->execute();
         $res = $requetePrepare->fetch(PDO::FETCH_ASSOC);
         return $res;
