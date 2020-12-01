@@ -28,6 +28,7 @@ switch ($action) {
         $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($_SESSION['visiteur'], $_SESSION['date']);
         $infoFraisForfait = $pdo->getLesFraisForfait($_SESSION['visiteur'], $_SESSION['date']);
         $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($_SESSION['visiteur'], $_SESSION['date']);
+        $infoFraisKM = $pdo->getLesFraisKM($_SESSION['visiteur']);
         include'vues/v_FicheFraisSP.php';
         $_SESSION['montant'] = $montants;
         break;

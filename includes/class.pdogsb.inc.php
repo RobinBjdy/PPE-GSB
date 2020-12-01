@@ -175,7 +175,7 @@ class PdoGsb {
      */
     public function getLesFraisForfait($idVisiteur, $mois) {
         $requetePrepare = PdoGSB::$monPdo->prepare(
-                'select fraisforfait.id as idfrais,fraisforfait.libelle as libelle,lignefraisforfait.quantite as quantite,fraisforfait.montant as prix '
+                'select fraisforfait.id as idfrais,fraisforfait.libelle as libelle,lignefraisforfait.quantite as quantite,fraisforfait.montant as prix, fraisKM.prix as fraisKM '
                 . 'from lignefraisforfait inner join fraisforfait '
                 . 'on fraisforfait.id=lignefraisforfait.idfraisforfait '
                 . 'where lignefraisforfait.idvisiteur= :unIdVisiteur and '

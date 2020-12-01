@@ -60,9 +60,13 @@
                     <td><?php echo $libelleFrais ?></td>
                     <td><?php echo $idLibelle ?></td>
                     <td><?php echo $quantite ?></td>
+                    <?php if($idLibelle !== 'KM'){?>
                     <td><?php echo $prix ?></td>
+                    <?php }else {?>
+                    td><?php echo $infoFraisKM ?></td>
+                    <?php }?>
                 </tr>
-
+                
             <?php } ?>
         </table>
     </div>
