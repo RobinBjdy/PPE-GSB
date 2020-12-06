@@ -175,7 +175,7 @@ class PdoGsb {
      */
     public function getLesFraisForfait($idVisiteur, $mois) {
         $requetePrepare = PdoGSB::$monPdo->prepare(
-                'select fraisforfait.id as idfrais,fraisforfait.libelle as libelle,lignefraisforfait.quantite as quantite,fraisforfait.montant as prix, fraisKM.prix as fraisKM '
+                'select fraisforfait.id as idfrais,fraisforfait.libelle as libelle,lignefraisforfait.quantite as quantite,fraisforfait.montant as prix '
                 . 'from lignefraisforfait inner join fraisforfait '
                 . 'on fraisforfait.id=lignefraisforfait.idfraisforfait '
                 . 'where lignefraisforfait.idvisiteur= :unIdVisiteur and '
@@ -319,7 +319,7 @@ class PdoGsb {
     public function creeNouvellesLignesFrais($idVisiteur, $mois) {
         $dernierMois = $this->dernierMoisSaisi($idVisiteur);
         $laDerniereFiche = $this->getLesInfosFicheFrais($idVisiteur, $dernierMois);
-        if ($laDerniereFiche['idEtat'] == 'CR') {
+        if ($laDerniereFiche['idetat'] == 'CR') {
             $this->majEtatFicheFrais($idVisiteur, $dernierMois, 'CL');
         }
         $requetePrepare = PdoGsb::$monPdo->prepare(
@@ -607,14 +607,57 @@ class PdoGsb {
         return $res;
     }
 
-    public function getLesFraisKM($idVisiteur) {
+    /**
+     * Cette fonction ajoute le terme REFUSE devant le libelle, non accepté par le comptable
+     * @param type $idFrais
+     */
+    public function refuserFraisHorsForfait($idFrais) {
         $requetePrepare = PdoGSB::$monPdo->prepare(
-                'SELECT fraiskm.prix from fraiskm '
-                . 'inner join visiteur on fraiskm.id = visiteur.idVéhicule '
+                'UPDATE lignefraishorsforfait '
+                . 'SET lignefraishorsforfait.libelle= LEFT(CONCAT("REFUSE"," ",libelle),100) '
+                . 'WHERE lignefraishorsforfait.id = :unIdFrais'
         );
+        $requetePrepare->bindParam(':unIdFrais', $idFrais, PDO::PARAM_STR);
         $requetePrepare->execute();
-        $res = $requetePrepare->fetch(PDO::FETCH_ASSOC);
-        return $res;
+    }
+
+    /**
+     * Fonction qui retourne le mois suivant un mois passé en paramètre
+     *
+     * @param String $mois Contient le mois à utiliser
+     *
+     * @return String le mois d'après
+     */
+    public function getMoisSuivant($mois) {
+        $numAnnee = substr($mois, 0, 4);
+        $numMois = substr($mois, 4, 2);
+        if ($numMois == '12') {
+            $numMois = '01';
+            $numAnnee++;
+        } else {
+            $numMois++;
+        }
+        if (strlen($numMois) == 1) {
+            $numMois = '0' . $numMois;
+        }
+        return $numAnnee . $numMois;
+    }
+
+    /**
+     * si il n y a pas de justificatifs, le frais est reporté pour le mois suivant
+     * @param type $idFrais
+     */
+    public function reporterFraisHorsForfait($idFrais, $ceMois) {
+        $mois = $this->getMoisSuivant($ceMois);
+        $requetePrepare = PdoGSB::$monPdo->prepare(
+                'UPDATE lignefraishorsforfait '
+                . 'SET lignefraishorsforfait.mois= :unMois '
+                . 'WHERE lignefraishorsforfait.id = :unIdFrais'
+        );
+        $requetePrepare->bindParam(':unIdFrais', $idFrais, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        return $mois;
     }
 
 }
