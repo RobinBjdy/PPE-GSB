@@ -63,7 +63,7 @@
                     <?php if($idLibelle !== 'KM'){?>
                     <td><?php echo $prix ?></td>
                     <?php }else {?>
-                    td><?php echo $infoFraisKM ?></td>
+                    <td><?php echo $prix ?></td>
                     <?php }?>
                 </tr>
                 
@@ -101,8 +101,6 @@
 <form method="post" 
       action="index.php?uc=SuivrePaiement&action=Valider" 
       role="form">
-<input id="okFicheFrais" type="submit" value="Valider" class="btn btn-success" 
-       accept=""role="button"> 
-<input id="annuler" type="reset" value="Réinitialiser" class="btn btn-danger" 
-       accept=""role="button">
+<input id="okFicheFrais" type="submit" value="Mettre en Paiement" class="btn btn-success" 
+       accept=""role="button" onclick="return confirm('Voulez-vous vraiment mettre en paiement cette fiche de frais ?');">
 </form></br></br>
