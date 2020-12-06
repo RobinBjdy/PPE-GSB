@@ -78,18 +78,19 @@
                                     Accueil
                                 </a>
                             </li>
-                            <li <?php if ($uc == 'SuivrePaiement') { ?>class="active1"<?php } ?>>
-                                <a href="index.php?uc=SuivrePaiement&action=selectionnerVisiteur" class="couleur">
-                                    <span class="fa fa-euro"></span>
-                                    Suivre le paiement fiche de frais
-                                </a>
-                            </li>
                             <li <?php if ($uc == 'ValiderFicheDeFrais') { ?>class="active1"<?php } ?>>
                                 <a href="index.php?uc=ValiderFicheDeFrais&action=selectionnerMois" class="couleur">
                                     <span class="fa fa-check"></span>
                                     Valider fiche de frais
                                 </a>
                             </li>
+                            <li <?php if ($uc == 'SuivrePaiement') { ?>class="active1"<?php } ?>>
+                                <a href="index.php?uc=SuivrePaiement&action=selectionnerVisiteur" class="couleur">
+                                    <span class="fa fa-euro"></span>
+                                    Suivre le paiement fiche de frais
+                                </a>
+                            </li>
+                            
                             <li 
                             <?php if ($uc == 'deconnexion') { ?>class="active1"<?php } ?>>
                                 <a href="index.php?uc=deconnexion&action=demandeDeconnexion" class="couleur">
