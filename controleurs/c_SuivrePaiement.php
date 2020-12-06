@@ -8,13 +8,19 @@
 $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
 $idVisiteur = filter_input(INPUT_POST, 'lstVisiteur', FILTER_SANITIZE_STRING);
 $montants = 0;
+$date = date('Ym');
 switch ($action) {
     case 'selectionnerVisiteur' :
-        $date = date('Ym');
-        $_SESSION['date'] = $date;
-        $lesVisiteur = $pdo->getVisiteurFromMoisVA($date);
-        $selectedValue = $lesVisiteur[0];
-        include 'vues/v_SelectVisiteurSP.php';
+        if (empty($pdo->getVisiteurFromMoisVA($date))) {
+            ajouterErreur("Aucun visiteur n'a de fiche de frais ce mois ci");
+            include 'vues/v_erreurs.php';
+            include 'vues/v_SelectVisiteurSP.php';
+        } else {
+            $_SESSION['date'] = $date;
+            $lesVisiteur = $pdo->getVisiteurFromMoisVA($date);
+            $selectedValue = $lesVisiteur[0];
+            include 'vues/v_SelectVisiteurSP.php';
+        }
         break;
     case 'FicheFraisSP':
         $leVisiteur = filter_input(INPUT_POST, 'lstVisiteur', FILTER_SANITIZE_STRING);
@@ -28,7 +34,6 @@ switch ($action) {
         $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($_SESSION['visiteur'], $_SESSION['date']);
         $infoFraisForfait = $pdo->getLesFraisForfait($_SESSION['visiteur'], $_SESSION['date']);
         $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($_SESSION['visiteur'], $_SESSION['date']);
-        $infoFraisKM = $pdo->getLesFraisKM($_SESSION['visiteur']);
         include'vues/v_FicheFraisSP.php';
         $_SESSION['montant'] = $montants;
         break;
@@ -36,8 +41,8 @@ switch ($action) {
         $pdo->validerFicheDeFraisVA($_SESSION['visiteur'], $_SESSION['date'], $_SESSION['montant']);
         ?>
         <div class = "alert alert-success" role = "alert">
-        <p>Votre fiche de frais a bien été validée ! <a href = "index.php?uc=SuivrePaiement&action=selectionnerVisiteur">Cliquez ici</a>
-        pour revenir à la page d'accueil.</p>
+            <p>Votre fiche de frais a bien été mise en paiement ! <a href = "index.php?uc=SuivrePaiement&action=selectionnerVisiteur">Cliquez ici</a>
+                pour revenir à la selection.</p>
         </div>
-        <?php
+    <?php
 }
