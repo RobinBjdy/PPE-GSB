@@ -11,7 +11,7 @@ $montants = 0;
 switch ($action) {
     case 'selectionnerMois' :
         if (empty($pdo->getMoisFicheDeFrais())) {
-            ajouterErreur("Aucune fiche de frais n'est à valider");
+           ?></br><?php ajouterErreur("Aucune fiche de frais n'est à valider");
             include 'vues/v_erreurs.php';
             include 'vues/v_SelectMois.php';
         } else {

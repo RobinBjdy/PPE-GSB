@@ -12,7 +12,7 @@ $date = date('Ym');
 switch ($action) {
     case 'selectionnerVisiteur' :
         if (empty($pdo->getVisiteurFromMoisVA($date))) {
-            ajouterErreur("Aucun visiteur n'a de fiche de frais ce mois ci");
+            ?></br><?php ajouterErreur("Aucun visiteur n'a de fiche de frais ce mois ci");
             include 'vues/v_erreurs.php';
             include 'vues/v_SelectVisiteurSP.php';
         } else {
