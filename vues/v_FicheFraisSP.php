@@ -55,6 +55,7 @@
                 $libelleFrais = $frais['libelle'];
                 $quantite = $frais['quantite'];
                 $prix = $frais['prix'];
+                $fraiskm = $frais['fraiskm'];
                 ?>
                 <tr>
                     <td><?php echo $libelleFrais ?></td>
@@ -63,7 +64,7 @@
                     <?php if($idLibelle !== 'KM'){?>
                     <td><?php echo $prix ?></td>
                     <?php }else {?>
-                    <td><?php echo $prix ?></td>
+                    <td><?php echo $fraiskm ?></td>
                     <?php }?>
                 </tr>
                 

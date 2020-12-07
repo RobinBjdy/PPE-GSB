@@ -66,6 +66,7 @@
                 $libelleFrais = $frais['libelle'];
                 $quantite = $frais['quantite'];
                 $prix = $frais['prix'];
+                $fraiskm = $frais['fraiskm'];
                 ?>
                 <tr>
                     <td><?php echo $libelleFrais ?></td>
@@ -76,8 +77,12 @@
                                    size="1" maxlength="5" 
                                    value="<?php echo $quantite ?>" 
                                    class="form-control">
+                                   <?php if ($idLibelle !== 'KM') { ?>
+                                <td><?php echo $prix ?></td>
+                            <?php } else { ?>
+                                <td><?php echo $fraiskm ?></td>
+                            <?php } ?>
                         </div></td>
-                    <td><?php echo $prix ?></td>
                 </tr>
 
             <?php } ?>
@@ -134,7 +139,7 @@
                                accept=""role="button"> 
                         <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-danger" 
                                accept=""role="button">
-                        <a href="index.php?uc=ValiderFicheDeFrais&action=supprimerFrais&idFrais=<?php echo $id ?>&mois=<?php echo $frais['mois']?>&idVisiteur=<?php echo $_SESSION['visiteur']?> " 
+                        <a href="index.php?uc=ValiderFicheDeFrais&action=supprimerFrais&idFrais=<?php echo $id ?>&mois=<?php echo $frais['mois'] ?>&idVisiteur=<?php echo $_SESSION['visiteur'] ?> " 
                            type="reset" class="btn btn-danger" role="button"
                            onclick="return confirm('Voulez-vous vraiment supprimer ou reporter ce frais hors forfait?');">Supprimer</a>
                     </td>

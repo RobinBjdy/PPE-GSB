@@ -175,9 +175,11 @@ class PdoGsb {
      */
     public function getLesFraisForfait($idVisiteur, $mois) {
         $requetePrepare = PdoGSB::$monPdo->prepare(
-                'select fraisforfait.id as idfrais,fraisforfait.libelle as libelle,lignefraisforfait.quantite as quantite,fraisforfait.montant as prix '
+                'select fraisforfait.id as idfrais,fraisforfait.libelle as libelle,lignefraisforfait.quantite as quantite,fraisforfait.montant as prix,fraiskm.prix as fraiskm '
                 . 'from lignefraisforfait inner join fraisforfait '
-                . 'on fraisforfait.id=lignefraisforfait.idfraisforfait '
+                . 'on fraisforfait.id=lignefraisforfait.idfraisforfait inner join visiteur '
+                . 'on visiteur.id=lignefraisforfait.idvisiteur inner join fraiskm '
+                . 'on visiteur.idVehicule=fraiskm.id '
                 . 'where lignefraisforfait.idvisiteur= :unIdVisiteur and '
                 . 'lignefraisforfait.mois= :unMois'
         );
