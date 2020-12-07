@@ -21,7 +21,12 @@
                     $montants += $montant;
                 }
                 foreach ($infoFraisForfait as $frais) {
-                    $montant = $frais['quantite'] * $frais['prix'];
+                    $idLibelle = $frais['idfrais'];
+                    $fraiskm = $frais['fraiskm'];
+                    if($idLibelle !== 'KM'){
+                    $montant = $frais['quantite'] * $frais['prix'];}
+                    else {
+                    $montant = $frais['quantite'] * $fraiskm;}
                     $montants += $montant;
                 }
                 $nbJustificatifs = $infoFiche['nbJustificatifs'];
@@ -40,7 +45,7 @@
                     <td><?php echo $idEtat ?></td>
                     <td><?php echo $libelle ?></td>
                 </tr>
-            <?php } ?>
+<?php } ?>
         </table>
     </div>
     <input id="nBJustif" type="submit" value="Corriger" class="btn btn-success" 
@@ -77,15 +82,15 @@
                                    size="1" maxlength="5" 
                                    value="<?php echo $quantite ?>" 
                                    class="form-control">
-                                   <?php if ($idLibelle !== 'KM') { ?>
+                            <?php if ($idLibelle !== 'KM') { ?>
                                 <td><?php echo $prix ?></td>
                             <?php } else { ?>
                                 <td><?php echo $fraiskm ?></td>
-                            <?php } ?>
+    <?php } ?>
                         </div></td>
                 </tr>
 
-            <?php } ?>
+<?php } ?>
         </table>
     </div>
     <input id="okElemForf" type="submit" value="Corriger" class="btn btn-success" 
@@ -145,7 +150,7 @@
                     </td>
 
                 </tr>
-            <?php } ?>
+<?php } ?>
         </table>
     </div>
 </form>

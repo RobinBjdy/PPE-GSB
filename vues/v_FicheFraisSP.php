@@ -19,8 +19,13 @@
                     $montant = $frais['montant'];
                     $montants += $montant;
                 }
-                foreach ($infoFraisForfait as $frais) {
-                    $montant = $frais['quantite']*$frais['prix'];
+               foreach ($infoFraisForfait as $frais) {
+                    $idLibelle = $frais['idfrais'];
+                    $fraiskm = $frais['fraiskm'];
+                    if($idLibelle !== 'KM'){
+                    $montant = $frais['quantite'] * $frais['prix'];}
+                    else {
+                    $montant = $frais['quantite'] * $fraiskm;}
                     $montants += $montant;
                 }
                 $nbJustificatifs = $infoFiche['nbJustificatifs'];
