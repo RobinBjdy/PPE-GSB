@@ -129,7 +129,7 @@ switch ($action) {
         $pdo->refuserFraisHorsForfait($idFrais);
         ?>
         <div class="alert alert-info" role="alert">
-            <p>Ce frais hors forfait a bien été supprimé! <a href = "index.php?uc=ValiderFicheDeFrais&action=ValiderFicheDeFrais">Cliquez ici</a>
+            <p>Ce frais hors forfait a bien été supprimé! <a href = "index.php?uc=ValiderFicheDeFrais&action=selectionnerMois">Cliquez ici</a>
                 pour revenir à la selection.</p>
         </div>
         <?php
@@ -146,7 +146,7 @@ switch ($action) {
         $moisAReporter = $pdo->reporterFraisHorsForfait($idFrais, $mois);
         ?>
         <div class="alert alert-info" role="alert">
-            <p>Ce frais hors forfait a bien été reporté au mois suivant! <a href = "index.php?uc=ValiderFicheDeFrais&action=ValiderFicheDeFrais">Cliquez ici</a>
+            <p>Ce frais hors forfait a bien été reporté au mois suivant! <a href = "index.php?uc=ValiderFicheDeFrais&action=selectionnerMois">Cliquez ici</a>
                 pour revenir à la selection.</p>
         </div>
         <?php
