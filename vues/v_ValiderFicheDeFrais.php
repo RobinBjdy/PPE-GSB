@@ -2,8 +2,8 @@
 <form method="post" 
       action="index.php?uc=ValiderFicheDeFrais&action=CorrigerNbJustificatifs" 
       role="form">
-    <div class="panel panel-info">
-        <div class="panel-heading">Fiche</div>
+    <div class="panel panel-info" style="border-color: #E02A2A;">
+        <div class="panel-heading" style="border-color: #E02A2A; background-color: #E02A2A; color: white;">Fiche</div>
         <table class="table table-bordered table-responsive">
             <tr>
                 <th>Date de modification</th>
@@ -23,10 +23,11 @@
                 foreach ($infoFraisForfait as $frais) {
                     $idLibelle = $frais['idfrais'];
                     $fraiskm = $frais['fraiskm'];
-                    if($idLibelle !== 'KM'){
-                    $montant = $frais['quantite'] * $frais['prix'];}
-                    else {
-                    $montant = $frais['quantite'] * $fraiskm;}
+                    if ($idLibelle !== 'KM') {
+                        $montant = $frais['quantite'] * $frais['prix'];
+                    } else {
+                        $montant = $frais['quantite'] * $fraiskm;
+                    }
                     $montants += $montant;
                 }
                 $nbJustificatifs = $infoFiche['nbJustificatifs'];
@@ -56,8 +57,8 @@
 <form method="post" 
       action="index.php?uc=ValiderFicheDeFrais&action=CorrigerFraisForfait" 
       role="form">
-    <div class="panel panel-info">
-        <div class="panel-heading">Eléments forfaitisés</div>
+    <div class="panel panel-info" style="border-color: #E02A2A;">
+        <div class="panel-heading" style="border-color: #E02A2A; background-color: #E02A2A; color: white;">Eléments forfaitisés</div>
         <table class="table table-bordered table-responsive">
             <tr>
                 <th>Libelle</th>
@@ -101,8 +102,8 @@
 <form method="post" 
       action="index.php?uc=ValiderFicheDeFrais&action=CorrigerElemHorsForfait" 
       role="form">
-    <div class="panel panel-info">
-        <div class="panel-heading">Eléments hors-forfait</div>
+    <div class="panel panel-info" style="border-color: #E02A2A;">
+        <div class="panel-heading" style="border-color: #E02A2A; background-color: #E02A2A; color: white;">Eléments hors-forfait</div>
         <table class="table table-bordered table-responsive">
             <tr>
                 <th>Date</th>

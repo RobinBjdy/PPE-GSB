@@ -116,7 +116,7 @@ switch ($action) {
         $unIdFrais = filter_input(INPUT_GET, 'idFrais', FILTER_SANITIZE_NUMBER_INT);
         $ceMois = filter_input(INPUT_GET, 'mois', FILTER_SANITIZE_STRING);
         $idVisiteur = filter_input(INPUT_GET, 'idVisiteur', FILTER_SANITIZE_STRING);
-        ?>
+        ?></br>
         <div class="alert alert-info" role="alert">
             <p><h4>Voulez vous modifier ou supprimer le frais?<br></h4>
             <a href="index.php?uc=ValiderFicheDeFrais&action=supprimer&idFrais=<?php echo $unIdFrais ?>">Supprimer</a> 
