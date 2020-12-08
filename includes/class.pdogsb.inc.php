@@ -78,6 +78,44 @@ class PdoGsb {
         }
         return PdoGsb::$monPdoGsb;
     }
+    
+    public function recupMdpVisiteur($login){
+        $requetePrepare = PdoGsb::$monPdo->prepare(
+                'SELECT visiteur.mdp AS mdp '
+                . 'FROM visiteur '
+                . 'WHERE visiteur.login = :unLogin'
+        );
+        $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        return $requetePrepare->fetch();
+    }
+    
+    public function recupMdpComptable($login){
+        $requetePrepare = PdoGsb::$monPdo->prepare(
+                'SELECT comptable.mdp AS mdp '
+                . 'FROM comptable '
+                . 'WHERE comptable.login = :unLogin'
+        );
+        $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        return $requetePrepare->fetch();
+    }
+    
+    public function verifMdp($login, $mdp, $table){
+        if ($table == 'visiteur'){
+            $result = $this->recupMdpVisiteur($login);
+        }
+        else{
+            $result = $this->recupMdpComptable($login);
+        }
+        $mdpverif = hash('sha512', $mdp);
+        if ($mdpverif === $result['mdp']){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
     /**
      * Retourne les informations d'un visiteur
@@ -88,29 +126,33 @@ class PdoGsb {
      * @return l'id, le nom et le prénom sous la forme d'un tableau associatif
      */
     public function getInfosVisiteur($login, $mdp) {
+        if ($this->verifMdp($login, $mdp, 'visiteur')){
         $requetePrepare = PdoGsb::$monPdo->prepare(
                 'SELECT visiteur.id AS id, visiteur.nom AS nom, '
                 . 'visiteur.prenom AS prenom '
                 . 'FROM visiteur '
-                . 'WHERE visiteur.login = :unLogin AND visiteur.mdp = :unMdp'
+                . 'WHERE visiteur.login = :unLogin'
         );
         $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
-        $requetePrepare->bindParam(':unMdp', $mdp, PDO::PARAM_STR);
         $requetePrepare->execute();
         return $requetePrepare->fetch();
+        }
+        return null;
     }
 
     public function getInfosComptable($login, $mdp) {
+        if ($this->verifMdp($login, $mdp, 'comptable')){
         $requetePrepare = PdoGsb::$monPdo->prepare(
                 'SELECT comptable.id AS id, comptable.nom AS nom, '
                 . 'comptable.prenom AS prenom '
                 . 'FROM comptable '
-                . 'WHERE comptable.login = :unLogin AND comptable.mdp = :unMdp'
+                . 'WHERE comptable.login = :unLogin'
         );
         $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
-        $requetePrepare->bindParam(':unMdp', $mdp, PDO::PARAM_STR);
         $requetePrepare->execute();
         return $requetePrepare->fetch();
+       }
+       return null;
     }
 
     /**
