@@ -51,7 +51,7 @@
     </div>
     <input id="nBJustif" type="submit" value="Corriger" class="btn btn-success" 
            role="button"> 
-    <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-danger" 
+    <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-warning" 
            role="button">
 </form></br> </br>
 <form method="post" 
@@ -96,7 +96,7 @@
     </div>
     <input id="okElemForf" type="submit" value="Corriger" class="btn btn-success" 
            role="button"> 
-    <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-danger" 
+    <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-warning" 
            role="button">
 </form></br> </br>
 <form method="post" 
@@ -143,7 +143,7 @@
                         </div></td>
                     <td><input id="okElemHorsForf" name="corriger[<?php echo $id ?>]" type="submit" value="Corriger" class="btn btn-success" 
                                accept=""role="button"> 
-                        <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-danger" style="background-color: #F9BB38; border-color: #F9BB38" 
+                        <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-warning"" 
                                accept=""role="button">
                         <a href="index.php?uc=ValiderFicheDeFrais&action=supprimerFrais&idFrais=<?php echo $id ?>&mois=<?php echo $frais['mois'] ?>&idVisiteur=<?php echo $_SESSION['visiteur'] ?> " 
                            type="reset" class="btn btn-danger" role="button"
@@ -160,6 +160,4 @@
       role="form">
     <input id="okFicheFrais" type="submit" value="Valider" class="btn btn-success" 
            accept=""role="button" onclick="return confirm('Voulez-vous vraiment valider cette fiche de frais ?');"> 
-    <input id="annuler" type="reset" value="Réinitialiser" class="btn btn-danger" 
-           accept=""role="button">
 </form></br></br>
