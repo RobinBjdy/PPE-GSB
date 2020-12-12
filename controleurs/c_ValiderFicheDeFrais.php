@@ -46,6 +46,7 @@ switch ($action) {
         include 'vues/v_SelectVisiteur.php';
         $nomVis = (filter_input(INPUT_POST, 'lstVisiteur', FILTER_SANITIZE_STRING));
         trim($nomVis);
+        $_SESSION['nomVisiteur'] = $nomVis;
         $idVis = $pdo->getIdFromNomVisiteur($nomVis);
         $_SESSION['visiteur'] = $idVis['id'];
         $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($_SESSION['visiteur'], $_SESSION['date']);
@@ -59,7 +60,7 @@ switch ($action) {
         $moisASelectionne = $_SESSION['date'];
         include 'vues/v_SelectMois.php';
         $lesVisiteur = $pdo->getVisiteurFromMois($_SESSION['date']);
-        $selectedValue = $_SESSION['visiteur'];
+        $selectedValue = $_SESSION['nomVisiteur'];
         include 'vues/v_SelectVisiteur.php';
         $nbJust = filter_input(INPUT_POST, 'nbJust', FILTER_DEFAULT);
         $pdo->majNbJustificatifs($_SESSION['visiteur'], $_SESSION['date'], $nbJust);
@@ -76,7 +77,7 @@ switch ($action) {
         $moisASelectionne = $_SESSION['date'];
         include 'vues/v_SelectMois.php';
         $lesVisiteur = $pdo->getVisiteurFromMois($_SESSION['date']);
-        $selectedValue = $_SESSION['visiteur'];
+        $selectedValue = $_SESSION['nomVisiteur'];
         include 'vues/v_SelectVisiteur.php';
         $lesFrais = filter_input(INPUT_POST, 'lesFrais', FILTER_DEFAULT, FILTER_FORCE_ARRAY);
         if (lesQteFraisValides($lesFrais)) {
@@ -98,7 +99,7 @@ switch ($action) {
         $moisASelectionne = $_SESSION['date'];
         include 'vues/v_SelectMois.php';
         $lesVisiteur = $pdo->getVisiteurFromMois($_SESSION['date']);
-        $selectedValue = $_SESSION['visiteur'];
+        $selectedValue = $_SESSION['nomVisiteur'];
         include 'vues/v_SelectVisiteur.php';
         $lesHorsForfaitDate = (filter_input(INPUT_POST, 'lesDates', FILTER_DEFAULT, FILTER_FORCE_ARRAY));
         $lesHorsForfaitLibelle = (filter_input(INPUT_POST, 'lesLibelles', FILTER_DEFAULT, FILTER_FORCE_ARRAY));
