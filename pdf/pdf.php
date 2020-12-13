@@ -14,7 +14,9 @@ require("fpdf.php");
 class PDF extends FPDF {
 
     // En-tête
-    function Header() {// Positionnement à 1,5 cm du bas
+    function Header() {
+
+        // Positionnement à 1,5 cm du bas
         $this->SetY(50);
         // Logo
         $this->Image('../images/logo.jpg', 75, 6, 60);
@@ -37,6 +39,7 @@ class PDF extends FPDF {
         // Numéro de page
         $this->Cell(0, 10, 'Page ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
+
 }
 
 // Instanciation de la classe dérivée
@@ -47,6 +50,7 @@ $pdf->SetFont('Times', '', 12);
 
 $unId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING);
 $unMois = filter_input(INPUT_GET, 'mois', FILTER_SANITIZE_STRING);
+
 $req = "SELECT id, CONCAT(nom, ' ', prenom)as nomvisiteur, mois FROM visiteur inner join lignefraisforfait on lignefraisforfait.idvisiteur=visiteur.id WHERE id='$unId' and mois='$unMois'";
 $rep = mysqli_query($db, $req);
 $row = mysqli_fetch_array($rep);
@@ -87,7 +91,7 @@ $total = 0;
 while ($row2 = mysqli_fetch_array($rep2)) {
     $pdf->SetY($position_detail);
     $pdf->SetX(15);
-    $pdf->MultiCell(45, 10, utf8_decode($row2['libelle']), 1, 'L');
+    $pdf->MultiCell(45, 10, $row2['libelle'], 1, 'L');
     $pdf->SetY($position_detail);
     $pdf->SetX(60);
     $pdf->MultiCell(45, 10, $row2['quantite'], 1, 'C');
@@ -121,36 +125,42 @@ function entete_table2() {
 
 entete_table2();
 
+// Liste des détails
+$position_detail2 = 180; // Position à 8mm de l'entête
+
 $req3 = "SELECT libelle, montant, date FROM lignefraishorsforfait WHERE idvisiteur='$unId' and mois='$unMois'";
 $rep3 = mysqli_query($db, $req3);
 $montant = 0;
 while ($row3 = mysqli_fetch_array($rep3)) {
-    $pdf->SetY(180);
+    $pdf->SetY($position_detail2);
     $pdf->SetX(37);
     $pdf->MultiCell(45, 10, utf8_decode($row3['date']), 1, 'C');
-    $pdf->SetY(180);
+    $pdf->SetY($position_detail2);
     $pdf->SetX(82);
-    $pdf->MultiCell(45, 10, $row3['libelle'], 1, 'C');
-    $pdf->SetY(180);
+    $pdf->MultiCell(45, 10, substr($row3['libelle'], 0, 20), 1, 'C');
+    $pdf->SetY($position_detail2);
     $pdf->SetX(127);
     $pdf->MultiCell(45, 10, $row3['montant'], 1, 'C');
-    $position_detail += 10;
     $montant += $row3['montant'];
+    if (empty(mysqli_fetch_array($rep3))) {
+        $pdf->SetY($position_detail2+20);
+        $pdf->SetX(125);
+        $pdf->Cell(40, 10, 'TOTAL ' . $unMois, 1, 0, 'C');
+        $pdf->SetY($position_detail2+20);
+        $pdf->SetX(165);
+        $pdf->Cell(30, 10, $total + $montant, 1, 0, 'C');
+
+        $today = date("d M Y");
+        $pdf->Text(130, $position_detail2+40, utf8_decode('Fait à Toulon le ') . $today);
+        $pdf->Text(130, $position_detail2+48, utf8_decode('Vu l\'agent comptable '));
+        $pdf->SetY($position_detail2+62);
+        $pdf->SetX(125);
+        $pdf->Cell(70, 27, $pdf->Image('../images/signatureComptable.jpg', 125, $position_detail2+65, 60), 1, 0, 'C');
+    }
+    $position_detail2 += 10;
 }
 
-$pdf->SetY(200);
-$pdf->SetX(125);
-$pdf->Cell(40, 10, 'TOTAL '. $unMois, 1, 0, 'C');
-$pdf->SetY(200);
-$pdf->SetX(165);
-$pdf->Cell(30, 10, $total + $montant, 1, 0, 'C');
 
-$today = date("d M Y"); 
-$pdf->Text(130, 230, utf8_decode('Fait à Toulon le ') . $today);
-$pdf->Text(130, 238, utf8_decode('Vu l\'agent comptable '));
-$pdf->SetY(242);
-$pdf->SetX(125);
-$pdf->Cell(70, 27, $pdf->Image('../images/signatureComptable.jpg', 125, 245, 60), 1, 0, 'C');
 
 $pdf->Output();
 ?>
