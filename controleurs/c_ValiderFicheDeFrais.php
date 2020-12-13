@@ -11,7 +11,8 @@ $montants = 0;
 switch ($action) {
     case 'selectionnerMois' :
         if (empty($pdo->getMoisFicheDeFrais())) {
-           ?></br><?php ajouterErreur("Aucune fiche de frais n'est à valider");
+            ?></br><?php
+            ajouterErreur("Aucune fiche de frais n'est à valider");
             include 'vues/v_erreurs.php';
             include 'vues/v_SelectMois.php';
         } else {
@@ -63,14 +64,20 @@ switch ($action) {
         $selectedValue = $_SESSION['nomVisiteur'];
         include 'vues/v_SelectVisiteur.php';
         $nbJust = filter_input(INPUT_POST, 'nbJust', FILTER_DEFAULT);
-        $pdo->majNbJustificatifs($_SESSION['visiteur'], $_SESSION['date'], $nbJust);
+        if (estEntierPositif($nbJust)) {
+            $pdo->majNbJustificatifs($_SESSION['visiteur'], $_SESSION['date'], $nbJust);
+            ?>
+            <script>alert("<?php echo htmlspecialchars('Votre fiche de frais a bien été corrigée ! ', ENT_QUOTES); ?>")</script>
+            <?php
+        } else {
+            ajouterErreur('Les valeurs des frais doivent être numériques');
+            include 'vues/v_erreurs.php';
+        }
         $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($_SESSION['visiteur'], $_SESSION['date']);
         $infoFraisForfait = $pdo->getLesFraisForfait($_SESSION['visiteur'], $_SESSION['date']);
         $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($_SESSION['visiteur'], $_SESSION['date']);
         include'vues/v_ValiderFicheDeFrais.php';
-        ?>
-        <script>alert("<?php echo htmlspecialchars('Votre fiche de frais a bien été corrigée ! ', ENT_QUOTES); ?>")</script>
-        <?php
+
         break;
     case 'CorrigerFraisForfait':
         $lesMois = $pdo->getMoisFicheDeFrais();
@@ -104,10 +111,24 @@ switch ($action) {
         $lesHorsForfaitDate = (filter_input(INPUT_POST, 'lesDates', FILTER_DEFAULT, FILTER_FORCE_ARRAY));
         $lesHorsForfaitLibelle = (filter_input(INPUT_POST, 'lesLibelles', FILTER_DEFAULT, FILTER_FORCE_ARRAY));
         $lesHorsForfaitMontant = (filter_input(INPUT_POST, 'lesMontants', FILTER_DEFAULT, FILTER_FORCE_ARRAY));
-        $pdo->majFraisHorsForfait($_SESSION['visiteur'], $_SESSION['date'], $lesHorsForfaitLibelle, $lesHorsForfaitMontant, $lesHorsForfaitDate);
-        ?>
-        <script>alert("<?php echo htmlspecialchars('Votre fiche de frais a bien été corrigée ! ', ENT_QUOTES); ?>")</script>
-        <?php
+        foreach ($lesHorsForfaitDate as $uneDate) {
+            dateAnglaisVersFrancais($uneDate);
+            foreach ($lesHorsForfaitLibelle as $unLibelle) {
+                foreach ($lesHorsForfaitMontant as $unMontant) {
+                    if (estDateDepassee($uneDate) || ($unLibelle == '') || ($unMontant == '')) {
+                        ajouterErreur('Une information est mauvaise. Rappel: date de moins de 1 ans, libelle et montant non null');
+                        include 'vues/v_erreurs.php';
+                        break 3;
+                    } else {
+                        $pdo->majFraisHorsForfait($_SESSION['visiteur'], $_SESSION['date'], $lesHorsForfaitLibelle, $lesHorsForfaitMontant, $lesHorsForfaitDate);
+                        ?>
+                        <script>alert("<?php echo htmlspecialchars('Votre fiche de frais a bien été corrigée ! ', ENT_QUOTES); ?>")</script>
+                        <?php
+                        break 3;
+                    }
+                }
+            }
+        }
         $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($_SESSION['visiteur'], $_SESSION['date']);
         $infoFraisForfait = $pdo->getLesFraisForfait($_SESSION['visiteur'], $_SESSION['date']);
         $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($_SESSION['visiteur'], $_SESSION['date']);
@@ -161,3 +182,4 @@ switch ($action) {
         </div>
     <?php
 }
+    
