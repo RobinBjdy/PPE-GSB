@@ -75,4 +75,4 @@
     </table>
 </div>
 
-<a onclick="window.open('pdf/pdf.php?id=<?php echo $_SESSION['idVisiteur'] ?>&mois=<?php echo $_SESSION['date']?>')" class="btn btn-warning" style="float: right;">Fichier PDF</a>
+<a onclick="window.open('pdf/pdf.php?id=<?php echo $_SESSION['idVisiteur'] ?>&mois=<?php echo $_SESSION['date']?>')" class="btn btn-warning" style="float: right;">Fichier PDF</a></br></br></br>
