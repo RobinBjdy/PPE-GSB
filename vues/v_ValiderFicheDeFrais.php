@@ -114,7 +114,7 @@
             <?php
             foreach ($infoFraisHorsForfait as $frais) {
                 $date = $frais['date'];
-                $datee = implode('-', array_reverse(explode('/', $date))); /* transform une date fr en une date us -> 29/10/2020 en 2020-10-29 */
+                $datee = implode('-', array_reverse(explode('/', $date))); /* transforme une date fr en une date us -> 29/10/2020 en 2020-10-29 */
                 $libellehorsFrais = $frais['libelle'];
                 $montant = $frais['montant'];
                 $id = $frais['id'];

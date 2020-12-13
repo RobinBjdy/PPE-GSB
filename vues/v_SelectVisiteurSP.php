@@ -1,5 +1,8 @@
-
+<h2>Suivi fiches de frais</h2>
 <div class="row">
+    <div class="col-md-9">
+        <h3>Sélectionner un visiteur : </h3>
+    </div>
     <div class="col-md-4">
         <form action="index.php?uc=SuivrePaiement&action=FicheFraisSP" method="post" role="form">
             <div class="form-group">
