@@ -91,7 +91,7 @@ $total = 0;
 while ($row2 = mysqli_fetch_array($rep2)) {
     $pdf->SetY($position_detail);
     $pdf->SetX(15);
-    $pdf->MultiCell(45, 10, $row2['libelle'], 1, 'L');
+    $pdf->MultiCell(45, 10, utf8_decode($row2['libelle']), 1, 'L');
     $pdf->SetY($position_detail);
     $pdf->SetX(60);
     $pdf->MultiCell(45, 10, $row2['quantite'], 1, 'C');
