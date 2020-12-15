@@ -24,8 +24,6 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 15);
         // Décalage à droite
         $this->Cell(40);
-        // Titre
-        $this->Cell(110, 10, 'REMBOURSEMENT DE FRAIS ENGAGES', 1, 0, 'C');
         // Saut de ligne
         $this->Ln(20);
     }
@@ -47,6 +45,11 @@ $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->SetFont('Times', '', 12);
+
+// Titre
+$pdf->SetY(55);
+$pdf->SetX(50);
+$pdf->Cell(110, 10, 'REMBOURSEMENT DE FRAIS ENGAGES', 1, 0, 'C');
 
 $unId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING);
 $unMois = filter_input(INPUT_GET, 'mois', FILTER_SANITIZE_STRING);
@@ -137,30 +140,29 @@ while ($row3 = mysqli_fetch_array($rep3)) {
     $pdf->MultiCell(45, 10, utf8_decode($row3['date']), 1, 'C');
     $pdf->SetY($position_detail2);
     $pdf->SetX(82);
-    $pdf->MultiCell(45, 10, substr($row3['libelle'], 0, 20), 1, 'C');
+    $pdf->MultiCell(45, 10, substr(utf8_decode($row3['libelle']), 0, 20), 1, 'C');
     $pdf->SetY($position_detail2);
     $pdf->SetX(127);
     $pdf->MultiCell(45, 10, $row3['montant'], 1, 'C');
     $montant += $row3['montant'];
-    if (empty(mysqli_fetch_array($rep3))) {
-        $pdf->SetY($position_detail2+20);
-        $pdf->SetX(125);
-        $pdf->Cell(40, 10, 'TOTAL ' . $unMois, 1, 0, 'C');
-        $pdf->SetY($position_detail2+20);
-        $pdf->SetX(165);
-        $pdf->Cell(30, 10, $total + $montant, 1, 0, 'C');
 
-        $today = date("d M Y");
-        $pdf->Text(130, $position_detail2+40, utf8_decode('Fait à Toulon le ') . $today);
-        $pdf->Text(130, $position_detail2+48, utf8_decode('Vu l\'agent comptable '));
-        $pdf->SetY($position_detail2+62);
-        $pdf->SetX(125);
-        $pdf->Cell(70, 27, $pdf->Image('../images/signatureComptable.jpg', 125, $position_detail2+65, 60), 1, 0, 'C');
-    }
     $position_detail2 += 10;
 }
-
-
+$today = date("d M Y");
+$pdf->SetY($position_detail2+17);
+$pdf->SetX(125);
+$pdf->Cell(40, 10, 'TOTAL ' . $unMois, 1, 0, 'C');
+$pdf->SetX(165);
+$pdf->Cell(30, 10, $total + $montant, 1, 0, 'C');
+$pdf->Ln(12); // Retour à la ligne
+$pdf->SetX(127);
+$pdf->Cell(50, 10, utf8_decode('Fait à Toulon le ') . $today, 0, 0, 'C');
+$pdf->Ln(8); // Retour à la ligne
+$pdf->SetX(127);
+$pdf->Cell(37, 10, utf8_decode('Vu l\'agent comptable '), 0, 0, 'C');
+$pdf->Ln(13); // Retour à la ligne
+$pdf->SetX(125);
+$pdf->Image('../images/signatureComptable.jpg');
 
 $pdf->Output();
 ?>
