@@ -1,4 +1,4 @@
-<h2>Suivi fiches de frais</h2>
+<h2>Suivi fiches de frais pour le mois de <?php echo date("M Y") ?></h2>
 <div class="row">
     <div class="col-md-9">
         <h3>Sélectionner un visiteur : </h3>
