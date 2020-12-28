@@ -30,9 +30,11 @@ switch ($action) {
         $lesMois = $pdo->getMoisFicheDeFrais();
         $moisASelectionne = $leMois;
         include 'vues/v_SelectMois.php';
+        //La variable $date prendra la valeur du mois selectionné
         $date = str_replace('/', '', filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING));
         trim($date);
         $_SESSION['date'] = $date;
+        //Selection des visiteur en fonction du mois
         $lesVisiteur = $pdo->getVisiteurFromMois($date);
         $selectedValue = $lesVisiteur[0];
         include 'vues/v_SelectVisiteur.php';
@@ -45,11 +47,14 @@ switch ($action) {
         $lesVisiteur = $pdo->getVisiteurFromMois($_SESSION['date']);
         $selectedValue = $leVisiteur;
         include 'vues/v_SelectVisiteur.php';
+        //Recupère le nom du visiteur selectionné
         $nomVis = (filter_input(INPUT_POST, 'lstVisiteur', FILTER_SANITIZE_STRING));
         trim($nomVis);
         $_SESSION['nomVisiteur'] = $nomVis;
+        //Avoir l'id du visiteur en fonction de son nom-prenom
         $idVis = $pdo->getIdFromNomVisiteur($nomVis);
         $_SESSION['visiteur'] = $idVis['id'];
+        //Selection de toutes les infos concernant le visiteur selectionné
         $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($_SESSION['visiteur'], $_SESSION['date']);
         $infoFraisForfait = $pdo->getLesFraisForfait($_SESSION['visiteur'], $_SESSION['date']);
         $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($_SESSION['visiteur'], $_SESSION['date']);
@@ -63,7 +68,9 @@ switch ($action) {
         $lesVisiteur = $pdo->getVisiteurFromMois($_SESSION['date']);
         $selectedValue = $_SESSION['nomVisiteur'];
         include 'vues/v_SelectVisiteur.php';
+        //La variable $nbJust prendra la valeur du nombre de justificatif indiqué
         $nbJust = filter_input(INPUT_POST, 'nbJust', FILTER_DEFAULT);
+        //Test de la valeur si elle est un entier positif
         if (estEntierPositif($nbJust)) {
             $pdo->majNbJustificatifs($_SESSION['visiteur'], $_SESSION['date'], $nbJust);
             ?>
@@ -86,7 +93,9 @@ switch ($action) {
         $lesVisiteur = $pdo->getVisiteurFromMois($_SESSION['date']);
         $selectedValue = $_SESSION['nomVisiteur'];
         include 'vues/v_SelectVisiteur.php';
+        //La variable $lesFrais sera un tableau avec les valeurs des différents frais indiqués
         $lesFrais = filter_input(INPUT_POST, 'lesFrais', FILTER_DEFAULT, FILTER_FORCE_ARRAY);
+        //Test si les quantités sont valides
         if (lesQteFraisValides($lesFrais)) {
             $pdo->majFraisForfait($_SESSION['visiteur'], $_SESSION['date'], $lesFrais);
             ?>
@@ -108,13 +117,18 @@ switch ($action) {
         $lesVisiteur = $pdo->getVisiteurFromMois($_SESSION['date']);
         $selectedValue = $_SESSION['nomVisiteur'];
         include 'vues/v_SelectVisiteur.php';
+        //La variable $lesHorsForfaitDate sera un tableau avec les valeurs des différentes dates indiquées
         $lesHorsForfaitDate = (filter_input(INPUT_POST, 'lesDates', FILTER_DEFAULT, FILTER_FORCE_ARRAY));
+        //La variable $lesHorsForfaitLibelle sera un tableau avec les valeurs des différents libelles indiqués
         $lesHorsForfaitLibelle = (filter_input(INPUT_POST, 'lesLibelles', FILTER_DEFAULT, FILTER_FORCE_ARRAY));
+        //La variable $lesHorsForfaitMontant sera un tableau avec les valeurs des différents montants indiqués
         $lesHorsForfaitMontant = (filter_input(INPUT_POST, 'lesMontants', FILTER_DEFAULT, FILTER_FORCE_ARRAY));
+        //Début des tests
         foreach ($lesHorsForfaitDate as $uneDate) {
             dateAnglaisVersFrancais($uneDate);
             foreach ($lesHorsForfaitLibelle as $unLibelle) {
                 foreach ($lesHorsForfaitMontant as $unMontant) {
+                    //Test si la date n'est pas n'est pas dépassée de plus d'un an et si le libelle et le montant ne sont pas nuls
                     if (estDateDepassee($uneDate) || ($unLibelle == '') || ($unMontant == '')) {
                         ajouterErreur('Une information est mauvaise. Rappel: date de moins de 1 ans, libelle et montant non null');
                         include 'vues/v_erreurs.php';
@@ -135,6 +149,7 @@ switch ($action) {
         include'vues/v_ValiderFicheDeFrais.php';
         break;
     case 'supprimerFrais':
+        //Recupère les valeurs concernant le visiteur passées dans l'url
         $unIdFrais = filter_input(INPUT_GET, 'idFrais', FILTER_SANITIZE_NUMBER_INT);
         $ceMois = filter_input(INPUT_GET, 'mois', FILTER_SANITIZE_STRING);
         $idVisiteur = filter_input(INPUT_GET, 'idVisiteur', FILTER_SANITIZE_STRING);
@@ -147,6 +162,7 @@ switch ($action) {
         <?php
         break;
     case 'supprimer':
+        //Recupère l'id concernant le visiteur passé dans l'url
         $idFrais = filter_input(INPUT_GET, 'idFrais', FILTER_SANITIZE_NUMBER_INT);
         $pdo->refuserFraisHorsForfait($idFrais);
         ?>
@@ -158,10 +174,12 @@ switch ($action) {
         break;
 
     case 'reporter':
+        //Recupère les valeurs concernant le visiteur passées dans l'url
         $idFrais = filter_input(INPUT_GET, 'idFrais', FILTER_SANITIZE_NUMBER_INT);
         $mois = filter_input(INPUT_GET, 'mois', FILTER_SANITIZE_STRING);
         $moisSuivant = $pdo->getMoisSuivant($mois);
         $idVisiteur = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING);
+        //Test si un fiche de frais existe déjà pour ce mois ou non et sinon créer une nouvelle fiche
         if ($pdo->estPremierFraisMois($idVisiteur, $moisSuivant)) {
             $pdo->creeNouvellesLignesFrais($idVisiteur, $moisSuivant);
         }

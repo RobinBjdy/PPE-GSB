@@ -523,6 +523,12 @@ class PdoGsb {
         $requetePrepare->execute();
     }
 
+    /**
+     * Recupère tous les mois ou l'id état vas être égal à CR donc en fiche créée,
+     * saisie en cours.
+     * 
+     * @return les mois 
+     */
     public function getMoisFicheDeFrais() {
         $requetePrepare = PdoGSB::$monPdo->prepare(
                 "select distinct mois from fichefrais where idetat='CR'");
@@ -541,6 +547,11 @@ class PdoGsb {
         return $leMois;
     }
 
+    /**
+     * Recupère tous les mois ou l'id état vas être égal à VA donc en fiche validée.
+     *  
+     * @return les mois
+     */
     public function getMoisFicheDeFraisVA() {
         $requetePrepare = PdoGSB::$monPdo->prepare(
                 "select distinct mois from fichefrais where idetat='VA'");
@@ -559,6 +570,12 @@ class PdoGsb {
         return $leMois;
     }
 
+    /**
+     * Recupère le visiteur en fonction du mois passé en paramètre.
+     * 
+     * @param type $mois
+     * @return le nom-prenom et l'id du visiteur
+     */
     public function getVisiteurFromMois($mois) {
         $requetePrepare = PdoGSB::$monPdo->prepare(
                 "select CONCAT(nom, ' ', prenom)as nomvisiteur, idvisiteur as visiteur from fichefrais "
@@ -571,6 +588,13 @@ class PdoGsb {
         return $res;
     }
 
+     /**
+     * Recupère le visiteur en fonction du mois passé en paramètre ayant la fiche
+     * de frais avec l'id état égal à VA donc validée.
+     * 
+     * @param type $mois
+     * @return le nom-prenom et l'id du visiteur
+     */
     public function getVisiteurFromMoisVA($mois) {
         $requetePrepare = PdoGSB::$monPdo->prepare(
                 "select CONCAT(nom, ' ', prenom)as nomvisiteur, idvisiteur as visiteur from fichefrais "
@@ -583,6 +607,22 @@ class PdoGsb {
         return $res;
     }
 
+    /**
+     * Met à jour la table ligneFraisHorsForfait.
+     * Met à jour la table ligneFraisHorsForfait pour un visiteur et
+     * un mois donné en enregistrant les nouveaux montants des libelles, montants et des dates.
+     * 
+     * @param type $idVisiteur
+     * @param type $mois
+     * @param array $lesHorsForfaitLibelle tableau associatif de clé lesHorsForfaitLibelle et
+     *                                     de valeur la quantité pour ce frais.
+     * @param array $lesHorsForfaitMontant tableau associatif de clé lesHorsForfaitMontant et
+     *                                     de valeur la quantité pour ce frais.
+     * @param array $lesHorsForfaitDate tableau associatif de clé lesHorsForfaitDate et
+     *                                  de valeur la quantité pour ce frais.
+     * 
+     * @return null
+     */
     public function majFraisHorsForfait($idVisiteur, $mois, $lesHorsForfaitLibelle, $lesHorsForfaitMontant, $lesHorsForfaitDate) {
         $lesCles = array_keys($lesHorsForfaitLibelle);
         foreach ($lesCles as $unIdHorsFrais) {
@@ -606,6 +646,17 @@ class PdoGsb {
         }
     }
 
+     /**
+     * Met à jour la table fichefrais.
+     * Met à jour la table fichefrais pour un idEtat et un montant donnés.
+     * Les Fiche de frais d'état CR vont passées en état VA
+     * 
+     * @param type $idVisiteur
+     * @param type $mois
+     * @param type $montant
+     * 
+     * @return null
+     */
     public function validerFicheDeFrais($idVisiteur, $mois, $montant) {
         $dateCourante = date('Y-m-d');
         $idEtat = 'VA';
@@ -623,6 +674,17 @@ class PdoGsb {
         $requetePrepare->execute();
     }
 
+    /**
+     * Met à jour la table fichefrais.
+     * Met à jour la table fichefrais pour un idEtat et un montant donnés.
+     * Les Fiche de frais d'état VA vont passées en état MP
+     * 
+     * @param type $idVisiteur
+     * @param type $mois
+     * @param type $montant
+     * 
+     * @return null
+     */
     public function validerFicheDeFraisVA($idVisiteur, $mois, $montant) {
         $dateCourante = date('Y-m-d');
         $idEtat = 'MP';
@@ -640,6 +702,12 @@ class PdoGsb {
         $requetePrepare->execute();
     }
 
+    /**
+     * Recupère l'id d'un visiteur en fonction du nom-prenom du visiteur passé en paramètre.
+     *
+     * @param type $nomVis
+     * @return L'id du visiteur
+     */
     public function getIdFromNomVisiteur($nomVis) {
         $requetePrepare = PdoGSB::$monPdo->prepare(
                 "select id from visiteur "
@@ -652,7 +720,8 @@ class PdoGsb {
     }
 
     /**
-     * Cette fonction ajoute le terme REFUSE devant le libelle, non accepté par le comptable
+     * Cette fonction ajoute le terme REFUSE devant le libelle, non accepté par le comptable.
+     * 
      * @param type $idFrais
      */
     public function refuserFraisHorsForfait($idFrais) {
@@ -666,7 +735,7 @@ class PdoGsb {
     }
 
     /**
-     * Fonction qui retourne le mois suivant un mois passé en paramètre
+     * Fonction qui retourne le mois suivant un mois passé en paramètre.
      *
      * @param String $mois Contient le mois à utiliser
      *
@@ -688,7 +757,8 @@ class PdoGsb {
     }
 
     /**
-     * si il n y a pas de justificatifs, le frais est reporté pour le mois suivant
+     * Si il n y a pas de justificatifs, le frais est reporté pour le mois suivant.
+     * 
      * @param type $idFrais
      */
     public function reporterFraisHorsForfait($idFrais, $ceMois) {

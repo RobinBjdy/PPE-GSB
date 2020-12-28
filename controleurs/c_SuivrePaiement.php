@@ -27,10 +27,13 @@ switch ($action) {
         $lesVisiteur = $pdo->getVisiteurFromMoisVA($_SESSION['date']);
         $selectedValue = $leVisiteur;
         include 'vues/v_SelectVisiteurSP.php';
+        //Recupère le nom du visiteur selectionné
         $nomVis = (filter_input(INPUT_POST, 'lstVisiteur', FILTER_SANITIZE_STRING));
         trim($nomVis);
+        //Avoir l'id du visiteur en fonction de son nom-prenom
         $idVis = $pdo->getIdFromNomVisiteur($nomVis);
         $_SESSION['visiteur'] = $idVis['id'];
+        //Selection de toutes les infos concernant le visiteur selectionné
         $infoFicheDeFrais = $pdo->getLesInfosFicheFrais($_SESSION['visiteur'], $_SESSION['date']);
         $infoFraisForfait = $pdo->getLesFraisForfait($_SESSION['visiteur'], $_SESSION['date']);
         $infoFraisHorsForfait = $pdo->getLesFraisHorsForfait($_SESSION['visiteur'], $_SESSION['date']);
