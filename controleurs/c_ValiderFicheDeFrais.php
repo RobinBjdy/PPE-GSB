@@ -8,6 +8,7 @@
 $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
 $idVisiteur = filter_input(INPUT_POST, 'lstVisiteur', FILTER_SANITIZE_STRING);
 $montants = 0;
+$pdo->ClotureFiche();
 switch ($action) {
     case 'selectionnerMois' :
         if (empty($pdo->getMoisFicheDeFrais())) {

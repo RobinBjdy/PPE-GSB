@@ -773,5 +773,24 @@ class PdoGsb {
         $requetePrepare->execute();
         return $mois;
     }
+    
+    /**
+     * Cloture toutes les fiches de frais du mois précédent en passant l'id état 
+     * de CR à CL.
+     */
+      public function ClotureFiche() {
+        $date = date("Ym",strtotime("-1 month"));
+        $idEtat = 'CL';
+        $id = 'CR';
+        $requetePrepare = PdoGSB::$monPdo->prepare(
+                'UPDATE fichefrais '
+                . 'SET fichefrais.idetat = :unIdEtat '
+                . 'WHERE fichefrais.idetat = :unId and fichefrais.mois = :uneDate'
+        );
+        $requetePrepare->bindParam(':unIdEtat', $idEtat, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':uneDate', $date, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unId', $id, PDO::PARAM_STR);
+        $requetePrepare->execute();
+    }
 
 }
